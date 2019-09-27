@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;; Evil bindings for outline-mode.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'outline)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defcustom evil-collection-outline-bind-tab-p t
   "Enable <tab>-based bindings in Outline mode.
@@ -44,6 +42,7 @@ mode."
 
 (defconst evil-collection-outline-maps '(outline-mode-map))
 
+;;;###autoload
 (defun evil-collection-outline-setup ()
   "Set up `evil' bindings for `outline'."
   (evil-set-initial-state 'outline-mode 'normal)
@@ -71,6 +70,7 @@ mode."
     "zl" 'outline-hide-leaves ; Like `outline-hide-body' but for current subtree only, Emacs has "C-c C-l".
     "zK" 'outline-show-branches ; Show all children recursively but no body.  Emacs has "C-c C-k".
     "zk" 'outline-show-children ; Direct children only unlike `outline-show-branches', and no content unlike `outline-show-entry' and `outline-toggle-children'.  Emacs has "C-c TAB".
+    "zu" 'outline-up-heading
 
     "zp" 'outline-hide-other ; Hide all nodes and bodies except current body.  Emacs has "C-c C-o".
     ;; outline-hide-sublevels ; q ; Is it any different from `outline-hide-body'?
@@ -80,13 +80,12 @@ mode."
     ;; TODO: To mark subtree ("C-c @"), we would need to define a tree object.
 
     ;; motion
-    "[" 'outline-previous-visible-heading
-    "]" 'outline-next-visible-heading
+    "[[" 'outline-previous-visible-heading
+    "]]" 'outline-next-visible-heading
     (kbd "C-k") 'outline-backward-same-level
     (kbd "C-j") 'outline-forward-same-level
     "gk" 'outline-backward-same-level
     "gj" 'outline-forward-same-level
-    "^" 'outline-up-heading
 
     (kbd "M-h") 'outline-promote ; Org-mode has "M-<left>", Evil-org has "M-h"
     (kbd "M-j") 'outline-move-subtree-down ; Org-mode has "M-<down>", Evil-org has "M-j"

@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;; Evil bindings for IBuffer.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'ibuffer)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-ibuffer-maps '(ibuffer-mode-map))
 
+;;;###autoload
 (defun evil-collection-ibuffer-setup ()
   "Set up `evil' bindings for `ibuffer'."
   (evil-set-initial-state 'ibuffer-mode 'normal)
@@ -133,11 +133,11 @@
 
     (kbd "C-j") 'ibuffer-forward-filter-group
     (kbd "M-n") 'ibuffer-forward-filter-group
-    (kbd "]") 'ibuffer-forward-filter-group
+    (kbd "]]") 'ibuffer-forward-filter-group
     "\t" 'ibuffer-forward-filter-group
     (kbd "M-p") 'ibuffer-backward-filter-group
-    (kbd "C-k") 'ibuffer-forward-filter-group
-    (kbd "[") 'ibuffer-backward-filter-group
+    (kbd "C-k") 'ibuffer-backward-filter-group
+    (kbd "[[") 'ibuffer-backward-filter-group
     [backtab] 'ibuffer-backward-filter-group
     (kbd "M-j") 'ibuffer-jump-to-filter-group
     (kbd "gx") 'ibuffer-kill-line

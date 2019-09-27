@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,9 +28,8 @@
 
 ;;; Code:
 (require 'emms nil t)
-(require 'evil-collection-util)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (declare-function emms-with-inhibit-read-only-t "emms")
 (declare-function emms-playlist-mode-correct-previous-yank "emms-playlist-mode")
 
@@ -38,7 +37,9 @@
 (defvar emms-playlist-mode-map)
 
 (defconst evil-collection-emms-maps '(emms-browser-mode-map
-                                      emms-playlist-mode-map))
+                                      emms-playlist-mode-map
+                                      emms-metaplaylist-mode-map
+                                      emms-stream-mode-map))
 
 (defun evil-collection-emms-playlist-mode-insert-newline-above ()
   "Insert a newline above point."
@@ -67,23 +68,30 @@ The return value is the yanked text."
   "Pastes the latest yanked playlist items behind point.
 The return value is the yanked text."
   (interactive)
-  (evil-next-line)
+  (unless (eobp) (evil-next-line))
   (evil-collection-emms-playlist-mode-paste-before))
 
+;;;###autoload
 (defun evil-collection-emms-browser-setup ()
   "Set up `evil' bindings for `emms-browser'."
   ;; TODO: Why doesn't evil-set-initial-state work with emms-browser-mode?
 
-  (evil-collection-util-inhibit-insert-state emms-browser-mode-map)
+  (evil-collection-inhibit-insert-state 'emms-browser-mode-map)
   (add-hook 'emms-browser-mode-hook 'evil-normal-state)
   (evil-collection-define-key 'normal 'emms-browser-mode-map
+    ;; The following overrides other "g-" and "s-" prefixed keys so we set it first.
+    "g" nil
+    "g" (lookup-key emms-browser-mode-map (kbd "W"))
+    "s" nil
+    "s" (lookup-key emms-browser-mode-map (kbd "s"))
+
     ;; playback controls
     "x" 'emms-pause
     "X" 'emms-stop
     "r" 'emms-random
     "<" 'emms-seek-backward
     ">" 'emms-seek-forward
-    (kbd "<return>") 'emms-browser-add-tracks
+    (kbd "RET") 'emms-browser-add-tracks
     (kbd "C-<return>") 'emms-browser-add-tracks-and-play
 
     ;; volume controls
@@ -94,8 +102,8 @@ The return value is the yanked text."
     "u" 'emms-playlist-mode-undo
 
     ;; motion
-    "[" 'emms-browser-prev-non-track
-    "]" 'emms-browser-next-non-track
+    "[[" 'emms-browser-prev-non-track
+    "]]" 'emms-browser-next-non-track
     (kbd "C-k") 'emms-browser-prev-non-track
     (kbd "C-j") 'emms-browser-next-non-track
     "gk" 'emms-browser-prev-non-track
@@ -131,19 +139,15 @@ The return value is the yanked text."
     ;; "" 'emms-browser-previous-filter ; TODO: What does this do?
     ;; "" 'emms-browser-next-filter
 
-    "s" (lookup-key emms-browser-mode-map (kbd "s"))
-    "g" (lookup-key emms-browser-mode-map (kbd "W")) ;; TODO: This overrides other "g-" prefixed keys.
 
     "C" 'emms-browser-clear-playlist
     "D" 'emms-browser-delete-files
     "d" 'emms-browser-view-in-dired
     "gd" 'emms-browser-view-in-dired)) ; "d" does the same, keep "gd" for consistency.
 
-(defun evil-collection-emms-setup ()
-  "Set up `evil' bindings for `emms'."
-  (with-eval-after-load 'emms-browser
-    (evil-collection-emms-browser-setup))
-
+;;;###autoload
+(defun evil-collection-emms-playlist-setup ()
+  "Set up `evil' bindings for `emms-playlist'."
   (evil-set-initial-state 'emms-playlist-mode 'normal)
   (evil-collection-define-key 'normal 'emms-playlist-mode-map
     ;; playback controls
@@ -156,7 +160,7 @@ The return value is the yanked text."
     (kbd "C-k") 'emms-previous
     "gj" 'emms-next
     "gk" 'emms-previous
-    (kbd "<return>") 'emms-playlist-mode-play-smart
+    (kbd "RET") 'emms-playlist-mode-play-smart
 
     ;; volume controls
     "+" 'emms-volume-raise
@@ -168,11 +172,11 @@ The return value is the yanked text."
     ;; motion
     "gg" 'emms-playlist-mode-first
     "G" 'emms-playlist-mode-last
-    "]" 'emms-playlist-mode-next
-    "[" 'emms-playlist-mode-previous
+    "]]" 'emms-playlist-mode-next
+    "[[" 'emms-playlist-mode-previous
 
     "D" 'emms-playlist-mode-kill-track  ; emms-browser uses "D"
-    "C" 'emms-playlist-mode-clear
+    "C" 'emms-playlist-clear
     "O" 'evil-collection-emms-playlist-mode-insert-newline-above
     "o" 'evil-collection-emms-playlist-mode-insert-newline-below
     "P" 'evil-collection-emms-playlist-mode-paste-before
@@ -200,20 +204,45 @@ The return value is the yanked text."
 
   (evil-collection-define-key 'visual 'emms-playlist-mode-map
     ;; "d" 'emms-playlist-mode-kill
-    "D" 'emms-playlist-mode-kill)
+    "D" 'emms-playlist-mode-kill))
+
+;;;###autoload
+(defun evil-collection-emms-setup ()
+  "Set up `evil' bindings for `emms'."
+  ;; emms-browser and emms-playlist-mode must be set up after they are loaded
+  ;; because we need the mode map to be defined when we `(lookup-key
+  ;; ...-mode-map ...)'.
+  (with-eval-after-load 'emms-browser
+    (evil-collection-emms-browser-setup))
+  (with-eval-after-load 'emms-playlist-mode
+    (evil-collection-emms-playlist-setup))
 
   (evil-collection-define-key 'normal 'emms-browser-search-mode-map
     "q" 'emms-browser-kill-search)
 
   (evil-set-initial-state 'emms-metaplaylist-mode 'normal)
   (evil-collection-define-key 'normal 'emms-metaplaylist-mode-map
-    (kbd "<return>") 'emms-metaplaylist-mode-goto-current
+    (kbd "RET") 'emms-metaplaylist-mode-goto-current
     (kbd "<space>") 'emms-metaplaylist-mode-set-active
     "gr" 'emms-metaplaylist-mode-update
     "C" 'emms-metaplaylist-mode-new-buffer
     "." 'emms-metaplaylist-mode-center-current
     "D" 'emms-metaplaylist-mode-kill-buffer
-    "q" 'kill-this-buffer))
+    "q" 'kill-this-buffer)
+
+  (evil-set-initial-state 'emms-stream-mode 'normal)
+  (evil-collection-define-key 'normal 'emms-stream-mode-map
+    (kbd "RET") 'emms-stream-play
+    "j" 'emms-stream-next-line
+    "k" 'emms-stream-previous-line
+    "y" 'emms-stream-yank-bookmark
+    "d" 'emms-stream-kill-bookmark
+    "c" 'emms-stream-edit-bookmark
+    "r" 'emms-stream-edit-bookmark
+    "i" 'emms-stream-info-bookmark
+    "s" 'emms-stream-save-bookmarks-file
+    "x" 'emms-stream-toggle-default-action
+    "q" 'emms-stream-quit))
 
 (provide 'evil-collection-emms)
 ;;; evil-collection-emms.el ends here

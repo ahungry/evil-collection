@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;; Evil bindings for `vlf'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'vlf nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar vlf-mode-map)
 (declare-function vlf-change-batch-size "vlf")
@@ -43,6 +41,7 @@
   (vlf-change-batch-size t))
 
 ;;; Code:
+;;;###autoload
 (defun evil-collection-vlf-setup ()
   "Set up `evil' bindings for `vlf'."
   (evil-set-initial-state 'vlf-mode 'normal)
@@ -52,8 +51,8 @@
     "gk" 'vlf-prev-batch
     (kbd "C-j") 'vlf-next-batch
     (kbd "C-k") 'vlf-prev-batch
-    "]" 'vlf-next-batch
-    "[" 'vlf-prev-batch
+    "]]" 'vlf-next-batch
+    "[[" 'vlf-prev-batch
 
     "+" 'vlf-change-batch-size
     "-" 'evil-collection-vlf-decrease-batch-size

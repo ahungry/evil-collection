@@ -4,7 +4,7 @@
 
 ;; Author: Felix Dick <felix.dick@web.de>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,21 +27,21 @@
 ;;; Bindings for `lsp-ui-imenu-mode'.
 
 ;;; Code:
-(require 'lsp-ui nil t)
-(require 'evil)
+(require 'lsp-ui-imenu nil t)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-lsp-ui-imenu-mode-maps '(lsp-ui-imenu-mode-map))
 
+;;;###autoload
 (defun evil-collection-lsp-ui-imenu-setup ()
   "Set up `evil' bindings for `lsp-ui-imenu'."
   (evil-set-initial-state 'lsp-ui-imenu-mode 'normal)
   (evil-collection-define-key 'normal 'lsp-ui-imenu-mode-map
-    (kbd "l") 'lsp-ui-imenu--prev-kind
-    (kbd "h") 'lsp-ui-imenu--next-kind
+    (kbd "C-k") 'lsp-ui-imenu--prev-kind
+    (kbd "C-j") 'lsp-ui-imenu--next-kind
     (kbd "q") 'lsp-ui-imenu--kill
-    (kbd "<return>") 'lsp-ui-imenu--look
-    (kbd "<M-return>") 'lsp-ui-imenu--go))
+    (kbd "RET") 'lsp-ui-imenu--view
+    (kbd "<M-return>") 'lsp-ui-imenu--visit))
 
 (provide 'evil-collection-lsp-ui-imenu)
 ;;; evil-collection-lsp-ui-imenu.el ends here

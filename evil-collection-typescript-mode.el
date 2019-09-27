@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;;; Bindings for `typescript-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'typescript-mode nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar typescript-indent-level)
 
@@ -38,6 +36,7 @@
   "Set `evil-shift-width' according to `typescript-indent-level'."
   (setq evil-shift-width typescript-indent-level))
 
+;;;###autoload
 (defun evil-collection-typescript-mode-setup ()
   "Set up `evil' bindings for `typescript-mode'."
   (add-hook 'typescript-mode-hook

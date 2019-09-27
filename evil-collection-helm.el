@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;; Evil bindings for Helm.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'helm-files nil t) ; TODO: Check if this is the ideal requirement and if we are not loading too much.
-
-(declare-function evil-collection-define-key "evil-collection")
 
 ;; To navigate Helm entries with <hjkl> in insert state, we need a modifier.
 ;; Using the C- modifier would conflict with the help prefix "C-h".  So we use
@@ -105,6 +103,7 @@
      header-line-format)))
 
 
+;;;###autoload
 (defun evil-collection-helm-setup ()
   "Set up `evil' bindings for `helm'."
   (add-hook 'helm-minibuffer-set-up-hook 'evil-collection-helm-hide-minibuffer-maybe)
@@ -188,8 +187,8 @@
 
   (evil-collection-define-key 'normal 'helm-map
     (kbd "<tab>") 'helm-select-action   ; TODO: Ivy has "ga".
-    (kbd "[") 'helm-previous-source
-    (kbd "]") 'helm-next-source
+    (kbd "[[") 'helm-previous-source
+    (kbd "]]") 'helm-next-source
     "gk" 'helm-previous-source
     "gj" 'helm-next-source
     (kbd "(") 'helm-prev-visible-mark

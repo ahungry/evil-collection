@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'comint)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-comint-maps '(comint-mode-map))
 
+;;;###autoload
 (defun evil-collection-comint-setup ()
   "Set up `evil' bindings for `comint'."
   (when evil-want-C-d-scroll
@@ -40,12 +40,15 @@
       (kbd "C-d") #'evil-scroll-down))
 
   (evil-collection-define-key 'normal 'comint-mode-map
-    (kbd "C-j") #'comint-next-input
-    (kbd "C-k") #'comint-previous-input
-    (kbd "gj") #'comint-next-input
-    (kbd "gk") #'comint-previous-input
-    (kbd "]") #'comint-next-input
-    (kbd "[") #'comint-previous-input)
+    ;; Match Eshell bindings:
+    (kbd "C-j") #'comint-next-prompt
+    (kbd "C-k") #'comint-previous-prompt
+    (kbd "gj") #'comint-next-prompt
+    (kbd "gk") #'comint-previous-prompt
+    (kbd "]]") #'comint-next-prompt
+    (kbd "[[") #'comint-previous-prompt
+    (kbd "C-p") #'comint-previous-input
+    (kbd "C-n") #'comint-next-input)
 
   (evil-collection-define-key 'insert 'comint-mode-map
     (kbd "<up>") #'comint-previous-input

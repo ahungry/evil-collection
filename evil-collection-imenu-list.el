@@ -1,10 +1,10 @@
-;;; evil-collection-eldoc.el --- Bindings for `eldoc'. -*- lexical-binding: t -*-
+;;; evil-collection-imenu-list.el --- Bindings for `imenu-list' -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 James Nguyen
 
-;; Author: James Nguyen <james@jojojames.com>
+;; Author: Fredrik Bergroth <fbergroth@gmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -24,16 +24,24 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;; Bindings for `eldoc'.
+;; Bindings for `imenu-list'.
 
 ;;; Code:
-(require 'eldoc)
-(require 'evil)
+(require 'evil-collection)
+(require 'imenu-list nil t)
 
-(defun evil-collection-eldoc-setup ()
-  "Set up `evil' bindings for `eldoc'.."
-  (when (fboundp 'eldoc-add-command-completions)
-    (eldoc-add-command-completions "evil-window-")))
+(defconst evil-collection-imenu-list-maps '(imenu-list-major-mode-map))
 
-(provide 'evil-collection-eldoc)
-;;; evil-collection-eldoc.el ends here
+;;;###autoload
+(defun evil-collection-imenu-list-setup ()
+  "Set up `evil' bindings for `imenu-list'."
+  (evil-collection-define-key 'normal 'imenu-list-major-mode-map
+    (kbd "RET") 'imenu-list-goto-entry
+    (kbd "TAB") 'hs-toggle-hiding
+    "d" 'imenu-list-display-entry
+    "gr" 'imenu-list-refresh
+    "q" 'imenu-list-quit-window))
+
+
+(provide 'evil-collection-imenu-list)
+;;; evil-collection-imenu-list.el ends here

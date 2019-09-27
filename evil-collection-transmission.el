@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,10 +28,9 @@
 ;; Evil bindings for `transmission'.
 
 ;;; Code:
-(require 'evil-collection-util)
+(require 'evil-collection)
 (require 'transmission nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defvar transmission-mode-map)
 (defvar transmission-files-mode-map)
 (defvar transmission-info-mode-map)
@@ -42,10 +41,11 @@
                                               transmission-info-mode-map
                                               transmission-peers-mode-map))
 
+;;;###autoload
 (defun evil-collection-transmission-setup ()
   "Set up `evil' bindings for `transmission'."
 
-  (evil-collection-util-inhibit-insert-state transmission-mode-map)
+  (evil-collection-inhibit-insert-state 'transmission-mode-map)
   (evil-set-initial-state 'transmission-mode 'normal)
   (evil-collection-define-key 'normal 'transmission-mode-map
     ;; motion
@@ -56,7 +56,7 @@
     ;; sort
     "o" 'tabulated-list-sort
 
-    (kbd "<return>") 'transmission-files
+    (kbd "RET") 'transmission-files
     "p" 'transmission-peers
     "i" 'transmission-info
 
@@ -85,7 +85,7 @@
     "ZQ" 'evil-quit
     "ZZ" 'transmission-quit)
 
-  (evil-collection-util-inhibit-insert-state transmission-files-mode-map)
+  (evil-collection-inhibit-insert-state 'transmission-files-mode-map)
   (evil-set-initial-state 'transmission-files-mode 'normal)
   (evil-collection-define-key 'normal 'transmission-files-mode-map
     (kbd "SPC") 'scroll-up-command
@@ -106,7 +106,7 @@
     "m" 'transmission-files-want
 
     ;; open
-    (kbd "<return>") 'transmission-find-file
+    (kbd "RET") 'transmission-find-file
     (kbd "S-<return>") 'transmission-find-file-other-window
     (kbd "M-<return>") 'transmission-display-file
     "go" 'transmission-find-file-other-window
@@ -126,7 +126,7 @@
     "ZQ" 'evil-quit
     "ZZ" 'transmission-quit)
 
-  (evil-collection-util-inhibit-insert-state transmission-info-mode-map)
+  (evil-collection-inhibit-insert-state 'transmission-info-mode-map)
   (evil-set-initial-state 'transmission-info-mode 'normal)
   (evil-collection-define-key 'normal 'transmission-info-mode-map
     "p" 'transmission-peers
@@ -156,7 +156,7 @@
                       #'transmission-copy-magnet))))
 
 
-  (evil-collection-util-inhibit-insert-state transmission-peers-mode-map)
+  (evil-collection-inhibit-insert-state 'transmission-peers-mode-map)
   (evil-set-initial-state 'transmission-peers-mode 'normal)
   (evil-collection-define-key 'normal 'transmission-peers-mode-map
     ;; sort

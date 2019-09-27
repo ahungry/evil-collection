@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,19 +27,26 @@
 ;; Bindings for `log-view'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'log-view)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-log-view-maps '(log-view-mode-map))
 
+;;;###autoload
 (defun evil-collection-log-view-setup ()
   "Set up `evil' bindings for `log-view'."
+
+  ;; Currently vc has these various log-view modes
+  (evil-set-initial-state 'vc-hg-log-view-mode 'normal)
+  (evil-set-initial-state 'vc-git-log-view-mode 'normal)
+  (evil-set-initial-state 'vc-svn-log-view-mode 'normal)
+
   (evil-collection-define-key 'normal 'log-view-mode-map
     "q" 'quit-window
-    (kbd "RET") 'log-view-toggle-entry-display
+    (kbd "TAB") 'log-view-toggle-entry-display
     "m" 'log-view-toggle-mark-entry
     "c" 'log-view-modify-change-comment
+    (kbd "RET") 'log-view-diff
     "d" 'log-view-diff
     "=" 'log-view-diff
     "D" 'log-view-diff-changeset
@@ -47,8 +54,8 @@
     "F" 'log-view-find-revision
     "gj" 'log-view-msg-next
     "gk" 'log-view-msg-prev
-    "]" 'log-view-msg-next
-    "[" 'log-view-msg-prev
+    "]]" 'log-view-msg-next
+    "[[" 'log-view-msg-prev
     (kbd "C-j") 'log-view-file-next
     (kbd "C-k") 'log-view-file-prev))
 

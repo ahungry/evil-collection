@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,15 +27,14 @@
 ;; Bindings for `simple'
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'simple)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar special-mode-map)
 
 (defconst evil-collection-simple-maps '(special-mode-map))
 
+;;;###autoload
 (defun evil-collection-simple-setup ()
   "Set up `evil' bindings for `simple'."
   (evil-collection-define-key '(normal visual) 'special-mode-map

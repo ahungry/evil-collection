@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -31,10 +31,8 @@
 ;; Conversely, switching to insert state will automatically switch to char mode.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'term)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defcustom evil-collection-term-sync-state-and-mode-p t
   "Synchronize insert/normal state with char/line-mode respectively.
@@ -105,6 +103,7 @@ it is not appropriate in some cases like terminals."
   (interactive)
   (term-send-raw-string "\t"))
 
+;;;###autoload
 (defun evil-collection-term-setup ()
   "Set up `evil' bindings for `term'."
   (evil-set-initial-state 'term-mode 'insert)
@@ -114,25 +113,25 @@ it is not appropriate in some cases like terminals."
 
   (add-hook 'term-mode-hook 'evil-collection-term-escape-stay)
 
-  ;; Evil has some "C-" bindings in insert state that shadow regular terminal bindings.
-  ;; Don't raw-send "C-c" (prefix key) nor "C-h" (help prefix).
+  ;; Evil has some "C-" bindings in insert state that shadow regular terminal
+  ;; bindings. Don't raw-send "C-c" (prefix key) nor "C-h" (help prefix).
   (evil-collection-define-key 'insert 'term-raw-map
     (kbd "C-a") 'term-send-raw
-    (kbd "C-b") 'term-send-raw ; Should not be necessary.
+    (kbd "C-b") 'term-send-raw          ; Should not be necessary.
     (kbd "C-d") 'term-send-raw
     (kbd "C-e") 'term-send-raw
-    (kbd "C-f") 'term-send-raw ; Should not be necessary.
+    (kbd "C-f") 'term-send-raw          ; Should not be necessary.
     (kbd "C-k") 'term-send-raw
-    (kbd "C-l") 'term-send-raw ; Should not be necessary.
+    (kbd "C-l") 'term-send-raw          ; Should not be necessary.
     (kbd "C-n") 'term-send-raw
     (kbd "C-o") 'term-send-raw
     (kbd "C-p") 'term-send-raw
-    (kbd "C-q") 'term-send-raw ; Should not be necessary.
+    (kbd "C-q") 'term-send-raw          ; Should not be necessary.
     (kbd "C-r") 'term-send-raw
-    (kbd "C-s") 'term-send-raw ; Should not be necessary.
+    (kbd "C-s") 'term-send-raw          ; Should not be necessary.
     (kbd "C-t") 'term-send-raw
-    (kbd "C-u") 'term-send-raw ; Should not be necessary.
-    (kbd "C-v") 'term-send-raw ; Should not be necessary.
+    (kbd "C-u") 'term-send-raw          ; Should not be necessary.
+    (kbd "C-v") 'term-send-raw          ; Should not be necessary.
     (kbd "C-w") 'term-send-raw
     (kbd "C-y") 'term-send-raw
     (kbd "C-z") 'term-send-raw
@@ -142,20 +141,27 @@ it is not appropriate in some cases like terminals."
 
   (evil-collection-define-key 'normal 'term-mode-map
     (kbd "C-c C-k") 'evil-collection-term-char-mode-insert
-    (kbd "<return>") 'term-send-input
+    (kbd "RET") 'term-send-input
 
     (kbd "p") 'term-paste
 
     ;; motion
-    "[" 'term-previous-prompt
-    "]" 'term-next-prompt
+    "[[" 'term-previous-prompt
+    "]]" 'term-next-prompt
     (kbd "C-k") 'term-previous-prompt
     (kbd "C-j") 'term-next-prompt
     "gk" 'term-previous-prompt
     "gj" 'term-next-prompt
     ;; "0" 'term-bol ; "0" is meant to really go at the beginning of line.
     "^" 'term-bol
-    "$" 'term-show-maximum-output))
+    "$" 'term-show-maximum-output)
+
+  ;; https://github.com/emacs-evil/evil-collection/issues/235
+  (with-eval-after-load 'multi-term
+    (evil-collection-define-key 'normal 'term-mode-map
+      (kbd "<M-backspace>") 'term-send-backward-kill-word)
+    (evil-collection-define-key 'insert 'term-raw-map
+      (kbd "<M-backspace>") 'term-send-backward-kill-word)))
 
 (provide 'evil-collection-term)
 ;;; evil-collection-term.el ends here

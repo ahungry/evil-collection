@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;;; Bindings for `kotlin-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'kotlin-mode nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-kotlin-maps '(kotlin-mode-map))
 
+;;;###autoload
 (defun evil-collection-kotlin-mode-setup ()
   "Set up `evil' bindings for `kotlin-mode'."
   (evil-collection-define-key 'normal 'kotlin-mode-map

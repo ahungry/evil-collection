@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,15 +28,14 @@
 
 ;;; Code:
 (require 'edebug)
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defconst evil-collection-edebug-maps
   '(edebug-mode-map
     edebug-x-instrumented-function-list-mode-map
     edebug-x-breakpoint-list-mode-map))
 
+;;;###autoload
 (defun evil-collection-edebug-setup ()
   "Set up `evil' bindings for `edebug'."
   (evil-set-initial-state 'edebug-mode 'normal)
@@ -114,10 +113,10 @@
     (evil-collection-define-key 'normal 'edebug-x-instrumented-function-list-mode-map
       "E" 'edebug-x-evaluate-function
       "Q" 'edebug-x-clear-data
-      (kbd "<return>") 'edebug-x-find-function
+      (kbd "RET") 'edebug-x-find-function
       "q" 'quit-window)
     (evil-collection-define-key 'normal 'edebug-x-breakpoint-list-mode-map
-      (kbd "<return>") 'edebug-x-visit-breakpoint
+      (kbd "RET") 'edebug-x-visit-breakpoint
       "x" 'edebug-x-kill-breakpoint
       "Q" 'edebug-x-clear-data
       "q" 'quit-window)))

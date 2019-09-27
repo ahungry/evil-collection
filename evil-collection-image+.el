@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;; Evil bindings for image-mode with image+.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'image+ nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-image+-maps '(image-mode-map))
 
+;;;###autoload
 (defun evil-collection-image+-setup ()
   "Set up `evil' bindings for `image+'."
   (evil-collection-define-key 'normal 'image-mode-map

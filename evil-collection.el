@@ -3,11 +3,11 @@
 ;; Copyright (C) 2017 James Nguyen
 
 ;; Author: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Package-Requires: ((emacs "25.1") (cl-lib "0.5") (evil "1.2.13"))
 ;; Keywords: evil, tools
 
@@ -38,16 +38,45 @@
 (require 'evil)
 
 (defvar evil-want-integration)
-(if (featurep 'evil-integration)
-    (if evil-want-integration
+(defvar evil-want-keybinding)
+(if (featurep 'evil-keybindings)
+    (if evil-want-keybinding
         (display-warning
          '(evil-collection)
-         "Make sure to set `evil-want-integration' to nil before loading evil \
-or evil-collection.")
+         "Make sure to set `evil-want-keybinding' to nil before loading evil \
+or evil-collection.\
+\n
+See https://github.com/emacs-evil/evil-collection/issues/60 for more details.")
       (display-warning
        '(evil-collection)
-       "`evil-want-integration' was set to nil but not before loading evil."))
-  (require 'evil-collection-integration))
+       "`evil-want-keybinding' was set to nil but not before loading evil.\
+\n
+Make sure to set `evil-want-keybinding' to nil before loading evil \
+or evil-collection.\
+\n
+See https://github.com/emacs-evil/evil-collection/issues/60 for more details.")))
+
+(unless (featurep 'evil-integration)
+  (message "Requiring evil-integration. Set evil-want-integration to t to\
+ remove this message.\
+\n
+See https://github.com/emacs-evil/evil-collection/issues/60 for more details.")
+  (require 'evil-integration))
+
+;; Compatibility
+
+(eval-and-compile
+  (with-no-warnings
+    (if (version< emacs-version "26")
+        (progn
+          (defalias 'evil-collection-if-let* #'if-let)
+          (defalias 'evil-collection-when-let* #'when-let)
+          (function-put #'evil-collection-if-let* 'lisp-indent-function 2)
+          (function-put #'evil-collection-when-let* 'lisp-indent-function 1))
+      (defalias 'evil-collection-if-let* #'if-let*)
+      (defalias 'evil-collection-when-let* #'when-let*))))
+
+;; Compatibility
 
 (declare-function org-table-align "org-table.el" nil)
 
@@ -60,13 +89,31 @@ or evil-collection.")
   :type 'boolean
   :group 'evil-collection)
 
+(defcustom evil-collection-setup-debugger-keys t
+  "Whether to bind debugger keys when debugger is active.
+
+Debugger in this case is dependent on mode.
+
+This is only relevant for debug modes that are part of another mode,
+
+e.g. `indium'. Modes like `edebug' or `realgud' needs to be explicitly disabled
+
+through removing their entry from `evil-collection-mode-list'."
+  :type 'boolean
+  :group 'evil-collection)
+
+(defcustom evil-collection-want-unimpaired-p t
+  "Whether to enable unimpaired style bindings globally."
+  :type 'boolean
+  :group 'evil-collection)
+
 (defcustom evil-collection-mode-list
-  `(ace-jump-mode
+  `(2048-game
     ag
     alchemist
     anaconda-mode
+    apropos
     arc-mode
-    avy
     bookmark
     (buff-menu "buff-menu")
     calc
@@ -79,40 +126,56 @@ or evil-collection.")
     custom
     cus-theme
     daemons
+    deadgrep
     debbugs
     debug
     diff-mode
     dired
+    disk-usage
     doc-view
+    docker
+    ebib
+    edbi
     edebug
     ediff
-    eldoc
+    eglot
     elfeed
     elisp-mode
     elisp-refs
+    elisp-slime-nav
     emms
     epa
     ert
     eshell
     eval-sexp-fu
-    etags-select
+    evil-mc
     eww
     flycheck
+    flymake
     free-keys
     geiser
     ggtags
     git-timemachine
     go-mode
-    help
+    grep
     guix
+    hackernews
     helm
+    help
+    helpful
+    hg-histedit
+    hungry-delete
     ibuffer
     image
+    image-dired
     image+
+    imenu-list
     indium
     info
     ivy
     js2-mode
+    leetcode
+    log-edit
     log-view
     lsp-ui-imenu
     lua-mode
@@ -120,20 +183,25 @@ or evil-collection.")
     macrostep
     man
     magit
+    magit-todos
     ,@(when evil-collection-setup-minibuffer '(minibuffer))
+    monky
+    mu4e
+    mu4e-conversation
     neotree
     notmuch
     nov
     ;; occur is in replace.el which was built-in before Emacs 26.
     (occur ,(if (<= emacs-major-version 25) "replace" 'replace))
+    omnisharp
     outline
     p4
     (package-menu package)
-    paren
     pass
     (pdf pdf-view)
     popup
     proced
+    process-menu
     prodigy
     profiler
     python
@@ -141,25 +209,33 @@ or evil-collection.")
     racer
     realgud
     reftex
+    restclient
     rjsx-mode
     robe
-    ruby-mode
     rtags
+    ruby-mode
     simple
     slime
+    tablist
     (term term ansi-term multi-term)
+    tetris
     tide
     transmission
     typescript-mode
     vc-annotate
+    vc-dir
+    vc-git
     vdiff
     view
     vlf
-    which-key
+    vterm
+    w3m
     wdired
     wgrep
+    which-key
     woman
     xref
+    youtube-dl
     (ztree ztree-diff))
   "The list of modes which will be evilified by `evil-collection-init'.
 Elements are either target mode symbols or lists which `car' is the
@@ -232,8 +308,12 @@ function adds the ability to filter keys on the basis of
     (setq filtered-bindings (nreverse filtered-bindings))
     (cond ((null filtered-bindings))
           ((and (boundp map-sym) (keymapp (symbol-value map-sym)))
-           (apply #'evil-define-key*
-                  state (symbol-value map-sym) filtered-bindings))
+           (condition-case-unless-debug err
+               (apply #'evil-define-key*
+                      state (symbol-value map-sym) filtered-bindings)
+             (error
+              (message "evil-collection: error setting key in %s %S"
+                       map-sym err))))
           ((boundp map-sym)
            (user-error "evil-collection: %s is not a keymap" map-sym))
           (t
@@ -242,9 +322,44 @@ function adds the ability to filter keys on the basis of
              (fset fun `(lambda (&rest args)
                           (when (and (boundp ',map-sym) (keymapp ,map-sym))
                             (remove-hook 'after-load-functions #',fun)
-                            (apply #'evil-define-key*
-                                   ',state ,map-sym ',filtered-bindings))))
+                            (condition-case-unless-debug err
+                                (apply #'evil-define-key*
+                                       ',state ,map-sym ',filtered-bindings)
+                              (error
+                               (message
+                                ,(format
+                                  "evil-collection: error setting key in %s %%S"
+                                  map-sym)
+                                err))))))
              (add-hook 'after-load-functions fun t))))))
+
+(defun evil-collection-inhibit-insert-state (map-sym)
+  "Unmap insertion keys from normal state.
+This is particularly useful for read-only modes."
+  (evil-collection-define-key 'normal map-sym
+    [remap evil-append] #'ignore
+    [remap evil-append-line] #'ignore
+    [remap evil-insert] #'ignore
+    [remap evil-insert-line] #'ignore
+    [remap evil-change] #'ignore
+    [remap evil-change-line] #'ignore
+    [remap evil-substitute] #'ignore
+    [remap evil-change-whole-line] #'ignore
+    [remap evil-delete] #'ignore
+    [remap evil-delete-line] #'ignore
+    [remap evil-delete-char] #'ignore
+    [remap evil-delete-backward-char] #'ignore
+    [remap evil-replace] #'ignore
+    [remap evil-replace-state] #'ignore
+    [remap evil-open-below] #'ignore
+    [remap evil-open-above] #'ignore
+    [remap evil-paste-after] #'ignore
+    [remap evil-paste-before] #'ignore
+    [remap evil-join] #'ignore
+    [remap evil-indent] #'ignore
+    [remap evil-shift-left] #'ignore
+    [remap evil-shift-right] #'ignore
+    [remap evil-invert-char] #'ignore))
 
 (defun evil-collection--binding-lessp (a b)
   "Comparison function used to sort bindings of the form (state key def)."
@@ -255,19 +370,6 @@ function adds the ability to filter keys on the basis of
     (if (not (string= a-state b-state))
         (string-lessp a-state b-state)
       (string-lessp a-key b-key))))
-
-(defun evil-collection--map-active-p (map-name)
-  "Does MAP-NAME correspond to an active major or minor mode?
-
-This is a guess based on the convention that xyz-mode typically
-is associated with the map xyz-mode-map."
-  (save-match-data
-    (when (string-match "\\(.+-mode\\)-map" map-name)
-      (let ((mode (intern (match-string 1 map-name))))
-        (or (eq major-mode mode)
-            (and (boundp mode)
-                 (assoc mode minor-mode-alist)
-                 (symbol-value mode)))))))
 
 (defun evil-collection-describe-bindings (&optional arg)
   "Print bindings made by Evil Collection to separate buffer.
@@ -288,7 +390,8 @@ modes in the current buffer."
                                      (symbol-name b)))))
         (when (or (null arg)
                   (with-current-buffer orig-buf
-                    (evil-collection--map-active-p (symbol-name keymap))))
+                    (and (boundp keymap)
+                         (memq (symbol-value keymap) (current-active-maps)))))
           (insert "\n\n* " (symbol-name keymap) "\n")
           (insert "
 | State | Key | Definition |
@@ -301,10 +404,14 @@ modes in the current buffer."
                  #'evil-collection--binding-lessp)
            do
            (when (and def (not (eq def 'ignore)))
-             (insert (format "| %s | %s | %S |\n"
+             (insert (format "| %s | %s | %s |\n"
                              state
                              (replace-regexp-in-string "|" "¦" key)
-                             def))))
+                             (cond ((symbolp def) def)
+                                   ((functionp def) "(lambda ...)")
+                                   ((consp def)
+                                    (format "(%s ...)" (car def)))
+                                   (t "??"))))))
           (org-table-align)))
       (goto-char (point-min)))))
 
@@ -424,7 +531,11 @@ instead of the modes in `evil-collection-mode-list'."
                    (symbol-value
                     (intern (format "evil-collection-%s-maps" m))))))
             (run-hook-with-args 'evil-collection-setup-hook
-                                m mode-keymaps)))))))
+                                m mode-keymaps))))))
+  (when evil-collection-want-unimpaired-p
+    (require 'evil-collection-unimpaired)
+    (when (fboundp 'evil-collection-unimpaired-setup)
+      (evil-collection-unimpaired-setup))))
 
 (defvar evil-collection-delete-operators '(evil-delete
                                            evil-cp-delete
@@ -437,6 +548,35 @@ instead of the modes in `evil-collection-mode-list'."
                                          evil-sp-yank
                                          lispyville-yank)
   "List of yank operators.")
+
+;;* Search
+
+(defun evil-collection-evil-search-enabled ()
+  (eq evil-search-module 'evil-search))
+
+(defvar evil-collection-evil-search-forward
+  '(menu-item "" nil :filter (lambda (&optional _)
+                               (if (eq evil-search-module 'evil-search)
+                                   #'evil-ex-search-forward
+                                 #'evil-search-forward))))
+
+(defvar evil-collection-evil-search-backward
+  '(menu-item "" nil :filter (lambda (&optional _)
+                               (if (eq evil-search-module 'evil-search)
+                                   #'evil-ex-search-backward
+                                 #'evil-search-backward))))
+
+(defvar evil-collection-evil-search-next
+  '(menu-item "" nil :filter (lambda (&optional _)
+                               (if (eq evil-search-module 'evil-search)
+                                   #'evil-ex-search-next
+                                 #'evil-search-next))))
+
+(defvar evil-collection-evil-search-previous
+  '(menu-item "" nil :filter (lambda (&optional _)
+                               (if (eq evil-search-module 'evil-search)
+                                   #'evil-ex-search-previous
+                                 #'evil-search-previous))))
 
 (provide 'evil-collection)
 ;;; evil-collection.el ends here

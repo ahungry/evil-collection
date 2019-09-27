@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'arc-mode)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-arc-mode-maps '(archive-mode-map))
 
+;;;###autoload
 (defun evil-collection-arc-mode-setup ()
   "Set up `evil' bindings for `arc-mode'."
   (evil-set-initial-state 'arc-mode 'normal)
@@ -49,7 +49,7 @@
     "G" 'end-of-buffer
 
     ;; open
-    (kbd "<return>") 'archive-extract
+    (kbd "RET") 'archive-extract
     (kbd "S-<return>") 'archive-extract-other-window
     (kbd "M-<return>") 'archive-view
     "go" 'archive-extract-other-window

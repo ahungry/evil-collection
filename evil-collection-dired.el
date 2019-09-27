@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'dired)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-dired-maps '(dired-mode-map))
 
+;;;###autoload
 (defun evil-collection-dired-setup ()
   "Set up `evil' bindings for `dired'."
   (evil-collection-define-key 'normal 'dired-mode-map
@@ -132,7 +132,7 @@
     "Y" 'dired-copy-filename-as-kill
     "+" 'dired-create-directory
     ;; open
-    (kbd "<return>") 'dired-find-file
+    (kbd "RET") 'dired-find-file
     (kbd "S-<return>") 'dired-find-file-other-window
     (kbd "M-<return>") 'dired-display-file
     "gO" 'dired-find-file-other-window
@@ -142,11 +142,12 @@
     ;; moving
     "gj" 'dired-next-dirline
     "gk" 'dired-prev-dirline
-    "[" 'dired-prev-dirline
-    "]" 'dired-next-dirline
+    "[[" 'dired-prev-dirline
+    "]]" 'dired-next-dirline
     "<" 'dired-prev-dirline
     ">" 'dired-next-dirline
     "^" 'dired-up-directory
+    "-" 'dired-up-directory
     " " 'dired-next-line
     [?\S-\ ] 'dired-previous-line
     [remap next-line] 'dired-next-line

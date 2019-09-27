@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,12 +28,12 @@
 
 ;;; Code:
 
-(require 'evil)
+(require 'evil-collection)
 (require 'debug)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-debug-maps '(debugger-mode-map))
 
+;;;###autoload
 (defun evil-collection-debug-setup ()
   "Set up `evil' bindings for `debug'."
   (evil-set-initial-state 'debugger-mode 'normal)
@@ -42,7 +42,9 @@
     ;; motion
     (kbd "<tab>") 'forward-button
     (kbd "S-<tab>") 'backward-button
-    (kbd "<return>") 'debug-help-follow
+    (kbd "RET") (if (< emacs-major-version 27)
+                         'debug-help-follow
+                       'backtrace-help-follow-symbol)
     (kbd "SPC") 'next-line
 
     "R" 'debugger-record-expression

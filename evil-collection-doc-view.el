@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;;; Evil bindings for doc-view.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'doc-view)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-doc-view-maps '(doc-view-mode-map))
 
+;;;###autoload
 (defun evil-collection-doc-view-setup ()
   "Set up `evil' bindings for `doc-view'."
   (evil-set-initial-state 'doc-view-mode 'normal)
@@ -48,7 +48,7 @@
     "gg" 'doc-view-first-page
     "G" 'doc-view-last-page
     "J" 'doc-view-goto-page
-    (kbd "<return>") 'image-next-line
+    (kbd "RET") 'image-next-line
 
     ;; zoom
     "+" 'doc-view-enlarge

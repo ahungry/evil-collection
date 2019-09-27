@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,13 +27,13 @@
 ;; Evil bindings for `prodigy'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'prodigy nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-prodigy-maps '(prodigy-mode-map
                                          prodigy-view-mode-map))
 
+;;;###autoload
 (defun evil-collection-prodigy-setup ()
   "Set up `evil' bindings for `prodigy'."
   (evil-collection-define-key 'normal 'prodigy-mode-map
@@ -60,7 +60,7 @@
     "gr" 'prodigy-restart
 
     "`" 'prodigy-display-process
-    (kbd "<return>") 'prodigy-browse
+    (kbd "RET") 'prodigy-browse
     "it" 'prodigy-add-tag-filter
     "in" 'prodigy-add-name-filter
     "I" 'prodigy-clear-filters

@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,23 +27,24 @@
 ;;; Bindings for `lua-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'lua-mode nil t)
 
 (defvar lua-indent-level)
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-lua-mode-maps '(lua-mode-map))
 
 (defun evil-collection-lua-mode-set-evil-shift-width ()
   "Set `evil-shift-width' according to `lua-indent-level'."
   (setq evil-shift-width lua-indent-level))
 
+;;;###autoload
 (defun evil-collection-lua-mode-setup ()
   "Set up `evil' bindings for `lua-mode'."
   (add-hook 'lua-mode-hook #'evil-collection-lua-mode-set-evil-shift-width)
 
   (evil-collection-define-key 'normal 'lua-mode-map
-    "K" 'lua-search-documentation))
+    "K" 'lua-search-documentation
+    "gz" 'run-lua))
 
 (provide 'evil-collection-lua-mode)
 ;;; evil-collection-lua-mode.el ends here

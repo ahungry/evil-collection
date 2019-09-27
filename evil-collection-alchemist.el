@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;;; Bindings for `alchemist'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'alchemist nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-alchemist-maps '(alchemist-compile-mode-map
                                            alchemist-eval-mode-map
@@ -43,6 +41,7 @@
                                            alchemist-mode-map))
 
 
+;;;###autoload
 (defun evil-collection-alchemist-setup ()
   "Set up `evil' bindings for `alchemist'."
   (evil-set-initial-state 'alchemist-compile-mode 'normal)
@@ -98,8 +97,8 @@
     "gk" 'alchemist-test-previous-result
     (kbd "C-j") 'alchemist-test-next-result
     (kbd "C-k") 'alchemist-test-previous-result
-    "]" 'alchemist-test-next-stacktrace-file
-    "[" 'alchemist-test-previous-stacktrace-file
+    "]]" 'alchemist-test-next-stacktrace-file
+    "[[" 'alchemist-test-previous-stacktrace-file
     (kbd "C-c C-k") 'alchemist-report-interrupt-current-process)
 
   (evil-collection-define-key 'normal 'alchemist-mode-map

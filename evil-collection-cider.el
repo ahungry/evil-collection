@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,16 +27,15 @@
 ;; Evil bindings for Cider.
 
 ;;; Code:
-(require 'cl-macs)
+(require 'cl-lib)
 (require 'cider nil t)
-(require 'evil)
-(require 'evil-collection-settings)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (declare-function cider-debug-mode-send-reply "cider-debug")
 
 (defconst evil-collection-cider-maps '(cider-mode-map
                                        cider-repl-mode-map
+                                       cider-repl-history-mode-map
                                        cider-test-report-mode-map
                                        cider-macroexpansion-mode-map
                                        cider-connections-buffer-mode-map))
@@ -80,6 +79,7 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
                                           "inspect"
                                           "locals")
 
+;;;###autoload
 (defun evil-collection-cider-setup ()
   "Set up `evil' bindings for `cider'."
   (unless evil-move-beyond-eol
@@ -89,7 +89,7 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     (with-eval-after-load 'cider-eval-sexp-fu
       (advice-add 'cider-esf--bounds-of-last-sexp :around 'evil-collection-cider-last-sexp)))
 
-  (when evil-collection-settings-setup-debugger-keys
+  (when evil-collection-setup-debugger-keys
     (add-hook 'cider-mode-hook #'evil-normalize-keymaps)
     (add-hook 'cider--debug-mode-hook #'evil-normalize-keymaps)
     (evil-collection-define-key 'normal 'cider-mode-map
@@ -125,6 +125,19 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     "gf" 'cider-find-resource
     "K" 'cider-doc)
 
+  (evil-collection-define-key '(normal visual) 'cider-repl-history-mode-map
+    (kbd "C-k") 'cider-repl-history-previous
+    (kbd "C-j") 'cider-repl-history-forward
+    "gk" 'cider-repl-history-previous
+    "gj" 'cider-repl-history-forward
+    "[[" 'cider-repl-history-previous
+    "]]" 'cider-repl-history-forward
+
+    (kbd "RET") 'cider-repl-history-insert-and-quit
+    "gr" 'cider-repl-history-update
+    "q" 'cider-repl-history-quit
+    "u" 'cider-repl-history-undo-other-window)
+
   (evil-collection-define-key 'normal 'cider-test-report-mode-map
     (kbd "C-c ,") 'cider-test-commands-map
     (kbd "C-c C-t") 'cider-test-commands-map
@@ -136,7 +149,7 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
 
     (kbd "<backtab>") 'cider-test-previous-result
     (kbd "<tab>") 'cider-test-next-result
-    (kbd "<return>") 'cider-test-jump
+    (kbd "RET") 'cider-test-jump
     "t" 'cider-test-jump
     "d" 'cider-test-ediff
     "e" 'cider-test-stacktrace
@@ -164,7 +177,7 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     "d" 'cider-connections-make-default
     "c" 'cider-connection-browser
     "x" 'cider-connections-close-connection
-    (kbd "<return>") 'cider-connections-goto-connection
+    (kbd "RET") 'cider-connections-goto-connection
     "g?" 'describe-mode)
 
   (evil-set-initial-state 'cider-stacktrace-mode 'normal)
@@ -173,8 +186,8 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     (kbd "C-j") 'cider-stacktrace-next-cause
     (kbd "gk") 'cider-stacktrace-previous-cause
     (kbd "gj") 'cider-stacktrace-next-cause
-    (kbd "[") 'cider-stacktrace-previous-cause
-    (kbd "]") 'cider-stacktrace-next-cause
+    (kbd "[[") 'cider-stacktrace-previous-cause
+    (kbd "]]") 'cider-stacktrace-next-cause
     "gd" 'cider-stacktrace-jump
     "q" 'cider-popup-buffer-quit-function
     "J" 'cider-stacktrace-toggle-java
@@ -205,8 +218,8 @@ ex. \(cider-debug-mode-send-reply \":next\"\)"
     (kbd "C-k") 'cider-inspector-prev-page
     " " 'cider-inspector-next-page
     "s" 'cider-inspector-set-page-size
-    (kbd "]") 'cider-inspector-next-inspectable-object
-    (kbd "[") 'cider-inspector-previous-inspectable-object
+    (kbd "]]") 'cider-inspector-next-inspectable-object
+    (kbd "[[") 'cider-inspector-previous-inspectable-object
     "gj" 'cider-inspector-next-inspectable-object
     "gk" 'cider-inspector-previous-inspectable-object))
 

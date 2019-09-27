@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -31,17 +31,20 @@
 ;;; #108 is resolved.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'magit nil t)
 
 (defvar magit-blame-mode-map)
-(declare-function evil-collection-define-key "evil-collection")
 
-(defconst evil-collection-magit-maps '(magit-blame-mode-map))
+(defconst evil-collection-magit-maps '(magit-blame-mode-map
+                                       magit-blame-read-only-mode-map))
 
+;;;###autoload
 (defun evil-collection-magit-setup ()
   "Set up `evil' bindings for `magit'."
   (evil-collection-define-key 'normal 'magit-blame-mode-map
+    "q" 'magit-blame-quit)
+  (evil-collection-define-key 'normal 'magit-blame-read-only-mode-map
     "q" 'magit-blame-quit))
 
 (provide 'evil-collection-magit)

@@ -27,13 +27,12 @@
 
 ;;; Code:
 (require 'anaconda-mode nil t)
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defconst evil-collection-anaconda-mode-maps '(anaconda-view-mode-map
                                                anaconda-mode-map))
 
+;;;###autoload
 (defun evil-collection-anaconda-mode-setup ()
   "Set up `evil' bindings for `anaconda-mode'."
   ;; Bindings don't seem to be set the first time.
@@ -47,8 +46,8 @@
       "gk" 'previous-error-no-select
       (kbd "C-j") 'next-error-no-select
       (kbd "C-k") 'previous-error-no-select
-      "]" 'next-error-no-select
-      "[" 'previous-error-no-select
+      "]]" 'next-error-no-select
+      "[[" 'previous-error-no-select
       "q" 'quit-window))
 
   (evil-collection-define-key 'normal 'anaconda-mode-map

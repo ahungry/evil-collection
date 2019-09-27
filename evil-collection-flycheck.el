@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,14 @@
 ;; Evil bindings for `flycheck-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'flycheck nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defvar flycheck-error-list-mode-map)
 
 (defconst evil-collection-flycheck-maps '(flycheck-error-list-mode-map))
 
+;;;###autoload
 (defun evil-collection-flycheck-setup ()
   "Set up `evil' bindings for `flycheck'."
   (evil-set-initial-state 'flycheck-error-list-mode 'normal)
@@ -43,13 +43,13 @@
     "gk" 'flycheck-error-list-previous-error
     (kbd "C-j") 'flycheck-error-list-next-error
     (kbd "C-k") 'flycheck-error-list-previous-error
-    "]" 'flycheck-error-list-next-error
-    "[" 'flycheck-error-list-previous-error
+    "]]" 'flycheck-error-list-next-error
+    "[[" 'flycheck-error-list-previous-error
     "gr" 'flycheck-error-list-check-source
     "s" 'flycheck-error-list-set-filter
     "S" 'flycheck-error-list-reset-filter
     "x" 'flycheck-error-list-explain-error
-    (kbd "<return>") 'flycheck-error-list-goto-error
+    (kbd "RET") 'flycheck-error-list-goto-error
     "q" 'quit-window))
 
 (provide 'evil-collection-flycheck)

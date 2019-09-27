@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,12 +28,12 @@
 
 ;;; Code:
 (require 'cus-theme)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-cus-theme-maps '(custom-theme-choose-mode-map
                                            custom-new-theme-mode-map))
 
+;;;###autoload
 (defun evil-collection-cus-theme-setup ()
   "Set up `evil' bindings for `cus-theme'."
   (evil-set-initial-state 'custom-new-theme-mode 'normal)
@@ -42,8 +42,8 @@
   (evil-collection-define-key 'normal 'custom-theme-choose-mode-map
     "gj" 'widget-forward
     "gk" 'widget-backward
-    (kbd "]") 'widget-forward
-    (kbd "[") 'widget-backward
+    (kbd "]]") 'widget-forward
+    (kbd "[[") 'widget-backward
     (kbd "C-j") 'widget-forward
     (kbd "C-k") 'widget-backward
     "K" 'custom-describe-theme)
@@ -51,8 +51,8 @@
   (evil-collection-define-key 'normal 'custom-new-theme-mode-map
     "gj" 'widget-forward
     "gk" 'widget-backward
-    (kbd "]") 'widget-forward
-    (kbd "[") 'widget-backward
+    (kbd "]]") 'widget-forward
+    (kbd "[[") 'widget-backward
     (kbd "C-j") 'widget-forward
     (kbd "C-k") 'widget-backward
 

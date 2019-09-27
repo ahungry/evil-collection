@@ -4,7 +4,7 @@
 
 ;; Author: Maximiliano Sandoval <msandova@protonmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,10 @@
 ;; Evil bindings for `reftex-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'reftex-ref nil t)
 (require 'reftex-ref nil t)
 (require 'reftex-cite nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-reftex-maps '(reftex-select-shared-map
                                         reftex-toc-mode-map))
@@ -72,6 +70,7 @@
  o / O      Create BibTeX file with all marked / unmarked entries.
  X / X      Put all (marked) entries into one/many \\cite commands.")
 
+;;;###autoload
 (defun evil-collection-reftex-setup ()
   "Set up `evil' bindings for `reftex'."
 
@@ -81,8 +80,8 @@
   (evil-collection-define-key 'normal 'reftex-select-shared-map
     "j" 'reftex-select-next
     "k" 'reftex-select-previous
-    (kbd "]") 'reftex-select-next-heading
-    (kbd "[") 'reftex-select-previous-heading
+    (kbd "]]") 'reftex-select-next-heading
+    (kbd "[[") 'reftex-select-previous-heading
     (kbd "gj") 'reftex-select-next-heading
     (kbd "gk") 'reftex-select-previous-heading
     (kbd "C-j") 'reftex-select-next-heading

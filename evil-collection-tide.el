@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,14 +28,13 @@
 
 ;;; Code:
 (require 'tide nil t)
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defconst evil-collection-tide-maps '(tide-mode-map
                                       tide-references-mode-map
                                       tide-project-errors-mode-map))
 
+;;;###autoload
 (defun evil-collection-tide-setup ()
   "Set up `evil' bindings for `tide'."
   (evil-collection-define-key 'normal 'tide-mode-map
@@ -48,8 +47,7 @@
     "gk" 'tide-find-previous-reference
     (kbd "C-j") 'tide-find-next-reference
     (kbd "C-k") 'tide-find-previous-reference
-    (kbd "C-m") 'tide-goto-reference
-    (kbd "<return>") 'tide-goto-reference
+    (kbd "RET") 'tide-goto-reference
     ;; quit
     "q" 'quit-window)
 
@@ -58,8 +56,7 @@
     "gk" 'tide-find-previous-error
     (kbd "C-j") 'tide-find-next-error
     (kbd "C-k") 'tide-find-previous-error
-    (kbd "C-m") 'tide-goto-error
-    (kbd "<return>") 'tide-goto-error
+    (kbd "RET") 'tide-goto-error
     ;; quit
     (kbd "q") 'quit-window))
 

@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -25,10 +25,8 @@
 
 ;;; Commentary:
 ;;; Bindings for `free-keys'.
-(require 'evil)
+(require 'evil-collection)
 (require 'free-keys nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 ;;; Code:
 (defvar free-keys-mode-map)
@@ -40,6 +38,7 @@
   (setq-local header-line-format
               "Help: (c) change buffer (p) change prefix (q) quit"))
 
+;;;###autoload
 (defun evil-collection-free-keys-setup ()
   "Set up `evil' bindings for `free-keys'."
   (add-hook 'free-keys-mode-hook

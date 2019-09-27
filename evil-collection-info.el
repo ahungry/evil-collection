@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,18 +28,20 @@
 ;; This package uses normal state and redefines everything.
 
 ;;; Code:
-(require 'evil-collection-util)
-(require 'evil-collection-evil-search)
+(require 'evil-collection)
 (require 'info)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-info-maps '(Info-mode-map))
 
+;;;###autoload
 (defun evil-collection-info-setup ()
   "Set up `evil' bindings for `info-mode'."
-  (evil-collection-util-inhibit-insert-state Info-mode-map)
+  (evil-collection-inhibit-insert-state 'Info-mode-map)
   (evil-set-initial-state 'Info-mode 'normal)
+
   (evil-collection-define-key 'normal 'Info-mode-map
+    "l" 'evil-forward-char
+    "h" 'evil-backward-char
     (kbd "<tab>") 'Info-next-reference
     (kbd "S-<tab>") 'Info-prev-reference
 

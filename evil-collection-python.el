@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;;; Bindings for `python'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'python)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-python-maps '(python-mode-map))
 
@@ -38,6 +36,7 @@
   "Set `evil-shift-width' according to `python-indent-offset'."
   (setq evil-shift-width python-indent-offset))
 
+;;;###autoload
 (defun evil-collection-python-setup ()
   "Set up `evil' bindings for `python'."
   (add-hook 'python-mode-hook #'evil-collection-python-set-evil-shift-width)

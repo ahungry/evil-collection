@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,15 +27,16 @@
 ;; Evil bindings for `help-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'help-mode)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-help-maps '(help-mode-map))
 
+;;;###autoload
 (defun evil-collection-help-setup ()
   "Set up `evil' bindings for `help'."
   (evil-set-initial-state 'help-mode 'normal)
+  (evil-collection-inhibit-insert-state 'help-mode-map)
   (evil-collection-define-key 'normal 'help-mode-map
     ;; motion
     (kbd "SPC") 'scroll-up-command
@@ -56,9 +57,9 @@
 
     ;; The following bindings don't do what they are supposed to. "go" should open
     ;; in the same window and "gO" should open in a different one.
-    "go" 'push-button 
+    "go" 'push-button
     "gO" 'push-button
-    
+
     "g?" 'describe-mode
     "gr" 'revert-buffer
     "<" 'help-go-back

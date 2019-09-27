@@ -4,7 +4,7 @@
 
 ;; Author: Jay Kamat <jaygkamat@gmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,12 +28,12 @@
 
 ;;; Code:
 (require 'daemons nil t)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-daemons-maps '(daemons-mode-map
                                          daemons-output-mode-map))
 
+;;;###autoload
 (defun evil-collection-daemons-setup ()
   "Set up `evil' bindings for `daemons'."
   (evil-collection-define-key '(normal visual) 'daemons-mode-map

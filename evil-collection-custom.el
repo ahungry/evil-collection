@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'cus-edit)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-custom-maps '(custom-mode-map))
 
+;;;###autoload
 (defun evil-collection-custom-setup ()
   "Set up `evil' bindings for `Custom-mode'."
   (evil-set-initial-state 'Custom-mode 'normal)
@@ -45,9 +45,9 @@
     (kbd "SPC") 'scroll-up-command
     (kbd "S-SPC") 'scroll-down-command
     (kbd "<delete>") 'scroll-down-command
-    (kbd "<return>") 'Custom-newline
-    (kbd "]") 'widget-forward
-    (kbd "[") 'widget-backward
+    (kbd "RET") 'Custom-newline
+    (kbd "]]") 'widget-forward
+    (kbd "[[") 'widget-backward
     ;; TODO: Should the following be added?
     (kbd "C-j") 'widget-forward
     (kbd "C-k") 'widget-backward

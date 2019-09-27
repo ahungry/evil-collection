@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -35,27 +35,26 @@
 
 ;;; Code:
 
-(require 'evil)
+(require 'evil-collection)
 (require 'diff-mode)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-diff-mode-maps '(diff-mode-map))
 
 (defun evil-collection-diff-read-only-state-switch ()
   "Make read-only in motion state, writable in normal state."
-  (if buffer-read-only
-      (progn
-        (evil-motion-state))
-    (evil-normal-state)))
+  (when (eq major-mode 'diff-mode)
+    (if buffer-read-only
+        (evil-motion-state)
+      (evil-normal-state))))
 
+;;;###autoload
 (defun evil-collection-diff-toggle-setup ()
   "Toggle visiting diff buffers in motion state."
   (interactive)
   (when (eq major-mode 'diff-mode)
     (if (memq 'evil-collection-diff-read-only-state-switch read-only-mode-hook)
         (remove-hook 'read-only-mode-hook 'evil-collection-diff-read-only-state-switch t)
-      (add-hook 'read-only-mode-hook 'evil-collection-diff-read-only-state-switch nil t)
-      (read-only-mode))))
+      (add-hook 'read-only-mode-hook 'evil-collection-diff-read-only-state-switch nil t))))
 
 ;;; TODO: Report toggle function upstream?
 (defun evil-collection-diff-toggle-context-unified (start end)
@@ -83,21 +82,26 @@ current file instead."
       (widen)
     (diff-restrict-view arg)))
 
+;;;###autoload
 (defun evil-collection-diff-mode-setup ()
   "Set up `evil' bindings for `diff-mode'."
 
-  (evil-set-initial-state 'diff-mode 'motion)
+  ;; Don't switch to read-only/motion state by default as this can interfere
+  ;; with other modes which require a writable buffer, e.g. magit.
+  (evil-set-initial-state 'diff-mode 'normal)
 
   (evil-collection-define-key 'normal 'diff-mode-map
     ;; motion
     (kbd "SPC") 'scroll-up-command
     (kbd "S-SPC") 'scroll-down-command
-    (kbd "[") 'diff-file-prev
-    (kbd "]") 'diff-file-next
+    (kbd "[[") 'diff-file-prev
+    (kbd "]]") 'diff-file-next
     (kbd "C-j") 'diff-hunk-next
     (kbd "C-k") 'diff-hunk-prev
     "gj" 'diff-hunk-next
     "gk" 'diff-hunk-prev
+
+    "q" 'quit-window
 
     "\\" 'read-only-mode) ; magit has "\"
 
@@ -105,14 +109,14 @@ current file instead."
     ;; motion
     (kbd "SPC") 'scroll-up-command
     (kbd "S-SPC") 'scroll-down-command
-    (kbd "[") 'diff-file-prev
-    (kbd "]") 'diff-file-next
+    (kbd "[[") 'diff-file-prev
+    (kbd "]]") 'diff-file-next
     (kbd "C-j") 'diff-hunk-next
     (kbd "C-k") 'diff-hunk-prev
     "gj" 'diff-hunk-next
     "gk" 'diff-hunk-prev
 
-    (kbd "<return>") 'diff-goto-source
+    (kbd "RET") 'diff-goto-source
     "A" 'diff-add-change-log-entries-other-window
 
     "a" 'diff-apply-hunk

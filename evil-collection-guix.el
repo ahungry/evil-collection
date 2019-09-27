@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2018 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,9 @@
 ;; Evil bindings for `guix'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'guix nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-guix-maps '(guix-output-list-mode-map
                                       guix-package-info-mode-map
                                       guix-profile-list-mode-map
@@ -42,12 +41,13 @@
                                       guix-location-list-mode-map
                                       guix-hydra-build-list-mode-map
                                       guix-hydra-build-info-mode-map
-                                      guix-build-log-mode-map))
+                                      guix-build-log-mode-map
+                                      guix-service-list-mode-map))
 
 (defmacro evil-collection-guix-set (map)
   "Set common bindings in MAP."
   `(progn
-     (evil-collection-util-inhibit-insert-state ,map)
+     (evil-collection-inhibit-insert-state ',map)
      (evil-collection-define-key 'normal ',map
         ;; motion
         (kbd "SPC") 'scroll-up-command
@@ -85,12 +85,13 @@
         "ZQ" 'evil-quit
         "ZZ" 'quit-window)))
 
+;;;###autoload
 (defun evil-collection-guix-setup ()
   "Set up `evil' bindings for `guix'."
   (evil-collection-guix-set guix-ui-map) ; Covers output-list and generation-list.
 
   (evil-collection-define-key 'normal 'guix-output-list-mode-map
-    (kbd "<return>") 'bui-list-describe
+    (kbd "RET") 'bui-list-describe
 
     "gb" 'guix-package-list-latest-builds
     "gG" 'guix-output-list-graph
@@ -119,7 +120,7 @@
 
   (evil-collection-guix-set guix-profile-list-mode-map)
   (evil-collection-define-key 'normal 'guix-profile-list-mode-map
-    (kbd "<return>") 'bui-list-describe
+    (kbd "RET") 'bui-list-describe
 
     "c" 'guix-profile-list-set-current ; TODO: Bind to "." as per the rationale?
     "p" 'guix-profile-list-show-packages
@@ -136,7 +137,7 @@
     "c" 'guix-profile-info-set-current)
 
   (evil-collection-define-key 'normal 'guix-generation-list-mode-map
-    (kbd "<return>") 'bui-list-describe
+    (kbd "RET") 'bui-list-describe
 
     "p" 'guix-generation-list-show-packages
     "D" 'guix-generation-list-mark-delete
@@ -154,7 +155,7 @@
   (evil-collection-guix-set guix-license-list-mode-map)
   (evil-collection-define-key 'normal 'guix-license-list-mode-map
     (kbd "<tab>") 'forward-button       ; Why isn't this binding inhibited?
-    (kbd "<return>") 'bui-list-describe
+    (kbd "RET") 'bui-list-describe
 
     "p" 'guix-license-list-show-packages
     "gd" 'guix-license-list-edit)
@@ -163,21 +164,30 @@
 
   (evil-collection-guix-set guix-location-list-mode-map)
   (evil-collection-define-key 'normal 'guix-location-list-mode-map
-    (kbd "<return>") 'guix-location-list-show-packages ; In Emacs state, it seems to be overriden by `push-button'.
+    (kbd "RET") 'guix-location-list-show-packages ; In Emacs state, it seems to be overriden by `push-button'.
 
     "p" 'guix-location-list-show-packages
     "gd" 'guix-location-list-edit)
 
+  (evil-collection-guix-set guix-store-item-list-mode-map)
+  (evil-collection-define-key 'normal 'guix-store-item-list-mode-map
+    (kbd "RET") 'bui-list-describe
+    "d" 'guix-store-item-list-mark-delete
+    "gd" 'guix-store-item-list-edit
+    "x" 'guix-store-item-list-execute)
+
+  (evil-collection-guix-set guix-store-item-info-mode-map)
+
   (evil-collection-guix-set guix-hydra-build-list-mode-map)
   (evil-collection-define-key 'normal 'guix-hydra-build-list-mode-map
-    (kbd "<return>") 'bui-list-describe
+    (kbd "RET") 'bui-list-describe
 
     "gb" 'guix-hydra-build-list-latest-builds
     "gl" 'guix-hydra-build-list-view-log)
 
   (evil-collection-guix-set guix-hydra-build-info-mode-map)
 
-  (evil-collection-util-inhibit-insert-state guix-build-log-mode-map)
+  (evil-collection-inhibit-insert-state 'guix-build-log-mode-map)
   (evil-collection-define-key 'normal 'guix-build-log-mode-map
     ;; motion
     (kbd "SPC") 'scroll-up-command
@@ -187,8 +197,8 @@
 
     "gk" 'guix-build-log-previous-phase
     "gj" 'guix-build-log-next-phase
-    "[" 'guix-build-log-previous-phase
-    "]" 'guix-build-log-next-phase
+    "[[" 'guix-build-log-previous-phase
+    "]]" 'guix-build-log-next-phase
     (kbd "C-k") 'guix-build-log-previous-phase
     (kbd "C-j") 'guix-build-log-next-phase
 
@@ -201,6 +211,13 @@
     "q" 'quit-window
     "ZQ" 'evil-quit
     "ZZ" 'quit-window)
+
+  (evil-collection-guix-set guix-service-list-mode-map)
+  (evil-collection-define-key 'normal 'guix-service-list-mode-map
+    (kbd "<tab>") 'forward-button
+    (kbd "RET") 'bui-list-describe
+
+    "gd" 'guix-service-list-edit)
 
   (evil-collection-define-key 'normal 'guix-devel-mode-map
     ;; repl

@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,13 @@
 ;;; Bindings for `buff-menu'.
 
 ;;; Code:
+(require 'evil-collection)
+(require 'tabulated-list)
 
 ;; `evil-collection-buff-menu-Buffer-menu-unmark-all'
 
 ;; Code taken from emacs-26 repository.
-(require 'evil)
-(require 'tabulated-list)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-buff-menu-maps '(Buffer-menu-mode-map))
 
 ;; This is for `evil-collection-Buffer-menu-unmark-all-buffers.'
@@ -68,6 +67,7 @@ When called interactively prompt for MARK;  RET remove all marks."
 
 ;; `evil-collection-buff-menu-Buffer-menu-unmark-all'
 
+;;;###autoload
 (defun evil-collection-buff-menu-setup ()
   "Set up `evil' bindings for `buff-menu'.."
 

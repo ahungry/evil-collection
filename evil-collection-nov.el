@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,14 @@
 ;;; Bindings for`nov'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'nov nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defvar nov-mode-map)
 
 (defconst evil-collection-nov-maps '(nov-mode-map))
 
+;;;###autoload
 (defun evil-collection-nov-setup ()
   "Set up `evil' bindings for `nov'."
   (evil-collection-define-key 'normal 'nov-mode-map
@@ -45,11 +45,11 @@
     "gj" 'nov-next-document
     (kbd "C-j") 'nov-next-document
     (kbd "M-j") 'nov-next-document
-    "]" 'nov-next-document
+    "]]" 'nov-next-document
     "gk" 'nov-previous-document
     (kbd "C-k") 'nov-previous-document
     (kbd "M-k") 'nov-previous-document
-    "[" 'nov-previous-document
+    "[[" 'nov-previous-document
 
     "t" 'nov-goto-toc
     "i" 'nov-goto-toc

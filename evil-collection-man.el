@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;; Evil bindings for `man'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'man)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-man-maps '(Man-mode-map))
 
+;;;###autoload
 (defun evil-collection-man-setup ()
   "Set up `evil' bindings for `man'."
   (evil-set-initial-state 'Man-mode 'normal)
@@ -43,8 +43,8 @@
     (kbd "<tab>") 'forward-button
     (kbd "<backtab>") 'backward-button
 
-    (kbd "]") 'Man-next-manpage
-    (kbd "[") 'Man-previous-manpage
+    (kbd "]]") 'Man-next-manpage
+    (kbd "[[") 'Man-previous-manpage
     (kbd "gj") 'Man-next-manpage
     (kbd "gk") 'Man-previous-manpage
     (kbd "C-j") 'Man-next-section

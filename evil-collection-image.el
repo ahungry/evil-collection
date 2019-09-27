@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,16 +27,15 @@
 ;; Evil bindings for `image-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'image-mode)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 ;; TODO: pdf and doc-view conflict with image.
 ;; See https://github.com/emacs-evil/evil-collection/issues/23.
 
 (defconst evil-collection-image-maps '(image-mode-map))
 
+;;;###autoload
 (defun evil-collection-image-setup ()
   "Set up `evil' bindings for `image-mode'."
   (evil-set-initial-state 'image-mode 'normal)
@@ -57,7 +56,7 @@
     (kbd "S-SPC") 'image-scroll-down
     (kbd "<delete>") 'image-scroll-down
     ;; animation
-    (kbd "<return>") 'image-toggle-animation
+    (kbd "RET") 'image-toggle-animation
     "a0" 'image-reset-speed
     "ar" 'image-reverse-speed
     "F" 'image-goto-frame
@@ -70,8 +69,8 @@
     "H" 'image-transform-fit-to-height
     "W" 'image-transform-fit-to-width
 
-    "[" 'image-previous-file
-    "]" 'image-next-file
+    "[[" 'image-previous-file
+    "]]" 'image-next-file
     "gk" 'image-previous-file
     "gj" 'image-next-file
     (kbd "C-k") 'image-previous-file

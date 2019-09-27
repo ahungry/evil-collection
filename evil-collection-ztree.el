@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
-;; Maintainer: James Nguyen <james@jojojames.com>, Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
+;; Maintainer: James Nguyen <james@jojojames.com>, Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -26,24 +26,23 @@
 ;; Evil bindings for ztree.
 
 ;;; Code:
-(require 'evil-collection-util)
+(require 'evil-collection)
 (require 'ztree nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar ztree-mode-map)
 (defvar ztreediff-mode-map)
 
 (defconst evil-collection-ztree-maps '(ztree-mode-map ztreediff-mode-map))
 
+;;;###autoload
 (defun evil-collection-ztree-setup ()
   "Set up `evil' bindings for `ztree'."
 
-  (evil-collection-util-inhibit-insert-state ztree-mode-map)
+  (evil-collection-inhibit-insert-state 'ztree-mode-map)
   (evil-set-initial-state 'ztree-mode 'normal)
   (evil-collection-define-key 'normal 'ztree-mode-map
     (kbd "<tab>") 'ztree-jump-side
-    (kbd "<return>") 'ztree-perform-action
+    (kbd "RET") 'ztree-perform-action
     (kbd "SPC") 'ztree-perform-soft-action
 
     "x" 'ztree-toggle-expand-subtree
@@ -56,7 +55,7 @@
     "ZQ" 'quit-window
     "ZZ" 'quit-window)
 
-  (evil-collection-util-inhibit-insert-state ztreediff-mode-map)
+  (evil-collection-inhibit-insert-state 'ztreediff-mode-map)
   (evil-set-initial-state 'ztree-mode 'normal)
   (evil-define-minor-mode-key 'normal 'ztreediff-mode
     "C" 'ztree-diff-copy

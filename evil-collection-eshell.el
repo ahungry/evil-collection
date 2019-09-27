@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -24,14 +24,13 @@
 ;; see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; Evil bindings for EMMS
+;; Evil bindings for Eshell.
 
 ;;; Code:
 (require 'em-prompt)
 (require 'eshell)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-eshell-maps '(eshell-mode-map))
 
 (defun evil-collection-eshell-next-prompt ()
@@ -58,8 +57,8 @@
   "Set up `evil' bindings for `eshell'."
   (evil-collection-define-key 'normal 'eshell-mode-map
     ;; motion
-    "[" 'eshell-previous-prompt
-    "]" 'eshell-next-prompt
+    "[[" 'eshell-previous-prompt
+    "]]" 'eshell-next-prompt
     (kbd "C-k") 'eshell-previous-prompt
     (kbd "C-j") 'eshell-next-prompt
     "gk" 'eshell-previous-prompt
@@ -69,7 +68,10 @@
     (kbd "M-h") 'eshell-backward-argument
     (kbd "M-l") 'eshell-forward-argument
 
-    (kbd "<return>") 'eshell-send-input
+    (kbd "C-n") 'eshell-next-matching-input-from-input
+    (kbd "C-p") 'eshell-previous-matching-input-from-input
+
+    (kbd "RET") 'eshell-send-input
     (kbd "C-c C-c") 'evil-collection-eshell-interrupt-process)
   (evil-collection-define-key 'insert 'eshell-mode-map
     ;; motion
@@ -78,8 +80,8 @@
   (evil-collection-define-key 'visual 'eshell-mode-map
     ;; motion
     ;; TODO: This does not work with `evil-visual-line'.
-    "[" 'eshell-previous-prompt
-    "]" 'eshell-next-prompt
+    "[[" 'eshell-previous-prompt
+    "]]" 'eshell-next-prompt
     (kbd "C-k") 'eshell-previous-prompt
     (kbd "C-j") 'eshell-next-prompt
     "gk" 'eshell-previous-prompt
@@ -88,6 +90,7 @@
     "^" 'eshell-bol))
 
 ;; TODO: Compare this setup procedure with evil-ediff.
+;;;###autoload
 (defun evil-collection-eshell-setup ()
   "Set up `evil' bindings for `eshell'."
   (add-hook 'eshell-mode-hook 'evil-collection-eshell-next-prompt-on-insert)

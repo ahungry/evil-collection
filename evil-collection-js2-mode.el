@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,16 +27,16 @@
 ;;; Bindings for `js2-mode'
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'js2-mode nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defvar js-indent-level)
 
 (defun evil-collection-js2-set-evil-shift-width ()
   "Set `evil-shift-width' according to `js-indent-level'."
   (setq-local evil-shift-width js-indent-level))
 
+;;;###autoload
 (defun evil-collection-js2-mode-setup ()
   "Set up `evil' bindings for `js2-mode'."
   (add-hook 'js2-mode-hook #'evil-collection-js2-set-evil-shift-width)

@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,9 +27,7 @@
 ;; Evil bindings for the minibuffer.
 
 ;;; Code:
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defconst evil-collection-minibuffer-maps '(minibuffer-local-map
                                             minibuffer-local-ns-map
@@ -54,6 +52,7 @@ it does not have a mode."
   ;; then it may conflict with other packages' if they do the same.
   (evil-insert 1))
 
+;;;###autoload
 (defun evil-collection-minibuffer-setup ()
   "Initialize minibuffer for `evil'."
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Text-from-Minibuffer.html
@@ -63,7 +62,7 @@ it does not have a mode."
                  minibuffer-local-must-match-map
                  minibuffer-local-isearch-map))
     (evil-collection-define-key 'normal map (kbd "<escape>") 'abort-recursive-edit)
-    (evil-collection-define-key 'normal map (kbd "<return>") 'exit-minibuffer))
+    (evil-collection-define-key 'normal map (kbd "RET") 'exit-minibuffer))
 
   (add-hook 'minibuffer-setup-hook 'evil-collection-minibuffer-insert)
   ;; Because of the above minibuffer-setup-hook, some evil-ex bindings need be reset.

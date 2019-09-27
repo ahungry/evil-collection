@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,13 +27,12 @@
 ;; Evil bindings for `compile'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'compile)
-(require 'evil-collection-evil-search)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-compile-maps '(compilation-mode-map))
 
+;;;###autoload
 (defun evil-collection-compile-setup ()
   "Set up `evil' bindings for `compile'."
   (evil-set-initial-state 'compilation-mode 'normal)
@@ -45,7 +44,7 @@
     "0" 'evil-digit-argument-or-evil-beginning-of-line
     [mouse-2] 'compile-goto-error
     [follow-link] 'mouse-face
-    (kbd "<return>") 'compile-goto-error
+    (kbd "RET") 'compile-goto-error
 
     "go" 'compilation-display-error
     (kbd "S-<return>") 'compilation-display-error
@@ -54,8 +53,8 @@
     "gk" 'compilation-previous-error
     (kbd "C-j") 'compilation-next-error
     (kbd "C-k") 'compilation-previous-error
-    "[" 'compilation-previous-file
-    "]" 'compilation-next-file
+    "[[" 'compilation-previous-file
+    "]]" 'compilation-next-file
     "gr" 'recompile))
 
 (provide 'evil-collection-compile)

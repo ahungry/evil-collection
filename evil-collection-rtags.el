@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;;; Evil bindings for `rtags'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'rtags nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar rtags-mode-map)
 (defvar rtags-dependency-tree-mode-map)
@@ -42,6 +40,7 @@
                                        rtags-references-tree-mode-map
                                        rtags-location-stack-visualize-mode-map))
 
+;;;###autoload
 (defun evil-collection-rtags-setup ()
   "Set up `evil' bindings for `rtags'."
   (evil-set-initial-state 'rtags-mode 'normal)
@@ -51,7 +50,7 @@
 
   (evil-collection-define-key 'normal 'rtags-mode-map
     ;; open
-    (kbd "<return>") 'rtags-select
+    (kbd "RET") 'rtags-select
     (kbd "S-<return>") 'rtags-select-other-window
     (kbd "M-<return>") 'rtags-show-in-other-window
     (kbd "go") 'rtags-select-other-window
@@ -78,11 +77,11 @@
 
     (kbd "C-j") 'rtags-dependency-tree-next-level
     (kbd "C-k") 'rtags-dependency-tree-previous-level
-    "]" 'rtags-dependency-tree-next-level
-    "[" 'rtags-dependency-tree-previous-level
+    "]]" 'rtags-dependency-tree-next-level
+    "[[" 'rtags-dependency-tree-previous-level
 
     ;; open
-    (kbd "<return>") 'rtags-select
+    (kbd "RET") 'rtags-select
     (kbd "S-<return>") 'rtags-select-other-window
     (kbd "M-<return>") 'rtags-show-in-other-window
     "go" 'rtags-select-other-window
@@ -108,11 +107,11 @@
     (kbd "C-j") 'rtags-references-tree-next-level
     (kbd "C-k") 'rtags-references-tree-previous-level
 
-    "]" 'rtags-references-tree-next-level
-    "[" 'rtags-references-tree-previous-level
+    "]]" 'rtags-references-tree-next-level
+    "[[" 'rtags-references-tree-previous-level
 
     ;; open
-    (kbd "<return>") 'rtags-select
+    (kbd "RET") 'rtags-select
     (kbd "S-<return>") 'rtags-select-other-window
     (kbd "M-<return>") 'rtags-show-in-other-window
     "go" 'rtags-select-other-window
@@ -126,7 +125,7 @@
 
   (evil-collection-define-key 'normal 'rtags-location-stack-visualize-mode-map
     ;; open
-    (kbd "<return>") 'rtags-select
+    (kbd "RET") 'rtags-select
     (kbd "S-<return>") 'rtags-select-other-window
     (kbd "M-<return>") 'rtags-show-in-other-window
     (kbd "go") 'rtags-select-other-window

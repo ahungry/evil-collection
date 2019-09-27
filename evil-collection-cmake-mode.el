@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -25,15 +25,17 @@
 
 ;;; Commentary:
 ;;; Bindings for `cmake-mode'
-(require 'evil)
-(require 'cmake-mode nil t)
 
 ;;; Code:
+(require 'evil-collection)
+(require 'cmake-mode nil t)
+
 (defvar cmake-tab-width)
 (defun evil-collection-cmake-mode-set-evil-shift-width ()
   "Set `evil-shift-width' according to `cmake-tab-with'."
   (setq-local evil-shift-width cmake-tab-width))
 
+;;;###autoload
 (defun evil-collection-cmake-mode-setup ()
   "Set up `evil' bindings for `cmake-mode'."
   (add-hook 'cmake-mode-hook #'evil-collection-cmake-mode-set-evil-shift-width))

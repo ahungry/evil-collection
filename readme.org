@@ -2,6 +2,7 @@
 
 [[https://travis-ci.org/emacs-evil/evil-collection][file:https://travis-ci.org/emacs-evil/evil-collection.svg?branch=master]]
 [[https://melpa.org/#/evil-collection][file:https://melpa.org/packages/evil-collection-badge.svg]]
+[[https://stable.melpa.org/#/evil-collection][file:https://stable.melpa.org/packages/evil-collection-badge.svg]]
 
 This is a collection of [[https://github.com/emacs-evil/evil][Evil]] bindings for /the parts of Emacs/ that Evil does
 not cover properly by default, such as ~help-mode~, ~M-x calendar~, Eshell and
@@ -46,14 +47,21 @@ more.
 
    : (evil-collection-init 'calendar)
 
-   The list of supported modes is configured by ~~evil-collection-mode-list~~.
+   The list of supported modes is configured by ~evil-collection-mode-list~.
 
-   ~evil-collection~ assumes ~evil-want-integration~ is set to nil before loading ~evil~ and ~evil-collection.~
+   ~evil-collection~ assumes ~evil-want-keybinding~ is set to nil and
+   ~evil-want-integration~ is set to t before loading ~evil~ and
+   ~evil-collection.~ Note some other packages may load evil (e.g. evil-leader)
+   so bear that in mind when determining when to set the variables.
+
+   See https://github.com/emacs-evil/evil-collection/issues/60 and https://github.com/emacs-evil/evil/pull/1087
+   for more details.
 
    For example:
 
    #+begin_src emacs-lisp :tangle yes
-(setq evil-want-integration nil)
+(setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+(setq evil-want-keybinding nil)
 (require 'evil)
 (when (require 'evil-collection nil t)
   (evil-collection-init))
@@ -65,7 +73,8 @@ more.
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-integration nil)
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
 
@@ -325,7 +334,7 @@ more.
 
     - ~J~: [[mu4e][mu4e]] has ~j~ and [[evil-mu4e][evil-mu4e]] uses ~J~, so we use ~J~ too.
 
-    Some special modes like [[mu4e][mu4e]] and ibuffer offer to to "jump" to a different
+    Some special modes like [[mu4e][mu4e]] and ibuffer offer to "jump" to a different
     buffer.  This sometimes depends on the thing at point.
 
     This is not related to Evil jumps like ~C-i~ and ~C-o~, nor to "go to
@@ -398,7 +407,8 @@ more.
     ~ZQ~ will abort and clear any changes.
     ~ZZ~ will finish and save any changes.
     ~ESC~ will exit editable state.
-
+*** :q/:wq/etc
+    Modes with commands that can be bound to :q/:wq/etc will have those keys remapped.
 ** Key Translation
    ~evil-collection-translate-key~ allows binding a key to the definition of
    another key in the same keymap (comparable to how Vim's keybindings work). Its
@@ -445,7 +455,7 @@ more.
    A more common use case of ~evil-collection-translate-key~ would be for keeping
    the functionality of some keys that users may bind globally. For example, ~SPC~,
    ~[~, and ~]~ are bound in some modes. If you use these keys as global prefix
-   keys that you never want to be overriden, you'll want to give them higher
+   keys that you never want to be overridden, you'll want to give them higher
    priority than other evil keybindings (e.g. those made by ~(evil-define-key
    'normal some-map ...)~). To do this, you can create an "intercept" map and bind
    your prefix keys in it instead of in ~evil-normal-state-map~:
@@ -481,7 +491,7 @@ more.
     "[[" "["
     "]]" "]"))
 
-(add-hook 'evil-collection-setup-hook #'my-prefix-translation)
+(add-hook 'evil-collection-setup-hook #'my-prefix-translations)
 
 (evil-collection-init)
    #+end_src
@@ -505,7 +515,7 @@ more.
    ~:destructive t~ may be useful for interactive experimentation.
 
    ~evil-collection-swap-key~ is also provided as a wrapper around
-   ~evil-colletion-translate-key~ that allows swapping keys:
+   ~evil-collection-translate-key~ that allows swapping keys:
    #+begin_src emacs-lisp
 (evil-collection-swap-key nil 'evil-motion-state-map
   ";" ":")
@@ -524,9 +534,7 @@ more.
 
    Third-party packages are provided by several parties:
 
-   - [[https://github.com/emacs-evil/evil-ediff][evil-ediff]]
    - [[https://github.com/emacs-evil/evil-magit][evil-magit]]
-   - [[https://github.com/JorisE/evil-mu4e][evil-mu4e]]
    - Lispy: [[https://github.com/noctuid/lispyville][lispyville]] or [[https://github.com/sp3ctum/evil-lispy][evil-lispy]]
    - Org-mode: https://github.com/GuiltyDolphin/org-evil or https://github.com/Somelauw/evil-org-mode
 
@@ -547,7 +555,7 @@ more.
      #+begin_src emacs-lisp :tangle yes
         (use-package general
           :ensure t
-          :config
+          :init
           (setq general-override-states '(insert
                                           emacs
                                           hybrid
@@ -556,11 +564,12 @@ more.
                                           motion
                                           operator
                                           replace))
-          (general-override-mode)
+          :config
           (general-define-key
            :states '(normal visual motion)
            :keymaps 'override
            "SPC" 'hydra-space/body))
+           ;; Replace 'hydra-space/body with your leader function.
      #+end_src
 
      See [[https://github.com/noctuid/evil-guide][noctuid's evil guide]] for other approaches.

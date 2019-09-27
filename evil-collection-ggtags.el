@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;; Evil bindings for `ggtags-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'ggtags nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar ggtags-global-mode-map)
 (defvar ggtags-mode-map)
@@ -43,6 +41,7 @@
                                         ggtags-view-tag-history-mode-map
                                         ggtags-navigation-map))
 
+;;;###autoload
 (defun evil-collection-ggtags-setup ()
   "Set up `evil' bindings for `ggtags'."
   (evil-set-initial-state 'ggtags-global-mode 'normal)
@@ -64,8 +63,8 @@
     "gk" 'ggtags-view-search-history-prev
     (kbd "C-j") 'ggtags-view-search-history-next
     (kbd "C-k") 'ggtags-view-search-history-prev
-    "]" 'ggtags-view-search-history-next
-    "[" 'ggtags-view-search-history-prev
+    "]]" 'ggtags-view-search-history-next
+    "[[" 'ggtags-view-search-history-prev
     "x" 'ggtags-view-search-history-kill
     "gr" 'ggtags-view-search-history-update
     "r" 'ggtags-save-to-register
@@ -75,10 +74,10 @@
   (evil-collection-define-key 'normal 'ggtags-view-tag-history-mode-map
     "gj" 'next-error-no-select
     (kbd "C-j") 'next-error-no-select
-    "]" 'next-error-no-select
+    "]]" 'next-error-no-select
     "gk" 'previous-error-no-select
     (kbd "C-k") 'previous-error-no-select
-    (kbd "[") 'previous-error-no-select
+    (kbd "[[") 'previous-error-no-select
     "q" 'ggtags-kill-window)
 
   (evil-collection-define-key 'normal 'ggtags-navigation-map
@@ -87,15 +86,15 @@
     "gk" 'next-error
     (kbd "C-j") 'previous-error
     (kbd "C-k") 'previous-error
-    "]" 'ggtags-navigation-next-file
-    "[" 'ggtags-navigation-previous-file
+    "]]" 'ggtags-navigation-next-file
+    "[[" 'ggtags-navigation-previous-file
 
     ;; search
     "s" 'ggtags-navigation-isearch-forward
     "S" 'ggtags-navigation-isearch-forward
 
     "go" 'ggtags-navigation-visible-mode ;; FIXME: This can be anything.
-    (kbd "<return>") 'ggtags-navigation-mode-done))
+    (kbd "RET") 'ggtags-navigation-mode-done))
 
 (provide 'evil-collection-ggtags)
 ;;; evil-collection-ggtags.el ends here

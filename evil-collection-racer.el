@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,13 @@
 ;; Bindings for `racer'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'racer nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-racer-maps '(racer-mode-map
                                        racer-help-mode-map))
 
+;;;###autoload
 (defun evil-collection-racer-setup ()
   "Set up `evil' bindings for `racer'."
   (evil-collection-define-key 'normal 'racer-mode-map

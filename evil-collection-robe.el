@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,13 +27,12 @@
 ;;; Bindings for `robe'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'robe nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-robe-maps '(robe-mode-map))
 
+;;;###autoload
 (defun evil-collection-robe-setup ()
   "Set up `evil' bindings for `robe'."
   (evil-collection-define-key 'normal 'robe-mode-map

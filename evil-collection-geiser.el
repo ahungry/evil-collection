@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,8 @@
 ;;; Bindings for `geiser'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'geiser nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar geiser-debug-mode-map)
 (defvar geiser-doc-mode-map)
@@ -49,6 +47,7 @@
         (apply command args))
     (apply command args)))
 
+;;;###autoload
 (defun evil-collection-geiser-setup ()
   "Set up bindings for `geiser'."
   (unless evil-move-beyond-eol
@@ -75,8 +74,8 @@
     "gk" 'backward-button
     (kbd "C-j") 'forward-button
     (kbd "C-k") 'backward-button
-    "]" 'geiser-doc-next-section
-    "[" 'geiser-doc-previous-section
+    "]]" 'geiser-doc-next-section
+    "[[" 'geiser-doc-previous-section
     "x" 'geiser-doc-kill-page
     "X" 'geiser-doc-clean-history)
 
@@ -90,8 +89,8 @@
     "gk" 'geiser-repl-previous-prompt
     (kbd "C-j") 'geiser-repl-next-prompt
     (kbd "C-k") 'geiser-repl-previous-prompt
-    "]" 'geiser-repl-next-prompt
-    "[" 'geiser-repl-previous-prompt
+    "]]" 'geiser-repl-next-prompt
+    "[[" 'geiser-repl-previous-prompt
     "K" 'geiser-doc-symbol-at-point)
 
   (evil-collection-define-key 'normal 'geiser-mode-map

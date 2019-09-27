@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,12 +28,12 @@
 ;; `evil-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'elisp-refs nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-elisp-refs-maps '(elisp-refs-mode-map))
 
+;;;###autoload
 (defun evil-collection-elisp-refs-setup ()
   "Set up `evil' bindings for `elisp-refs'."
   (evil-collection-define-key 'normal 'elisp-refs-mode-map
@@ -43,7 +43,7 @@
     (kbd "C-k") 'elisp-refs-prev-match
     "gj" 'elisp-refs-next-match
     "gk" 'elisp-refs-prev-match
-    (kbd "<return>") 'elisp-refs-visit-match
+    (kbd "RET") 'elisp-refs-visit-match
 
     ;; quit
     "q" 'kill-this-buffer))

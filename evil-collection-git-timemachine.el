@@ -2,7 +2,7 @@
 
 ;; Author: William Carroll <wpcarro@gmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -26,14 +26,13 @@
 ;; outlines in evil-collection
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'git-timemachine nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar git-timemachine-mode-map)
 (defconst evil-collection-git-timemachine-map '(git-timemachine-mode-map))
 
+;;;###autoload
 (defun evil-collection-git-timemachine-setup ()
   "Setup `evil' keybindings for `git-timemachine'."
   (evil-define-minor-mode-key 'normal 'git-timemachine-mode

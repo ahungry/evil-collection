@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,15 +28,14 @@
 
 ;;; Code:
 (require 'eww)
-(require 'evil-collection-util)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defvar evil-collection-eww-maps '(eww-mode-map
                                    eww-history-mode-map
                                    eww-buffers-mode-map
                                    eww-bookmark-mode-map))
 
+;;;###autoload
 (defun evil-collection-eww-setup ()
   "Set up `evil' bindings for `eww'."
 
@@ -60,8 +59,8 @@
     "R" 'eww-readable                   ; Default binding.
     "r" 'eww-readable
 
-    "]" 'eww-next-url
-    "[" 'eww-previous-url
+    "]]" 'eww-next-url
+    "[[" 'eww-previous-url
     "gj" 'eww-next-url
     "gk" 'eww-previous-url
 
@@ -99,10 +98,10 @@
                       (setq evil-inhibit-operator t)
                       #'eww-copy-page-url))))
 
-  (evil-collection-util-inhibit-insert-state eww-history-mode-map)
+  (evil-collection-inhibit-insert-state 'eww-history-mode-map)
   (evil-set-initial-state 'eww-history-mode 'normal)
   (evil-collection-define-key 'normal 'eww-history-mode-map
-    (kbd "<return>") 'eww-history-browse
+    (kbd "RET") 'eww-history-browse
     ;; refresh
     "gr" 'revert-buffer
     ;; quit
@@ -110,13 +109,13 @@
     "ZQ" 'quit-window
     "ZZ" 'quit-window)
 
-  (evil-collection-util-inhibit-insert-state eww-buffers-mode-map)
+  (evil-collection-inhibit-insert-state 'eww-buffers-mode-map)
   (evil-set-initial-state 'eww-buffers-mode 'normal)
   (evil-collection-define-key 'normal 'eww-buffers-mode-map
     "D" 'eww-buffer-kill
-    (kbd "<return>") 'eww-buffer-select
-    "]" 'eww-buffer-show-next
-    "[" 'eww-buffer-show-previous
+    (kbd "RET") 'eww-buffer-select
+    "]]" 'eww-buffer-show-next
+    "[[" 'eww-buffer-show-previous
     "gj" 'eww-buffer-show-next
     "gk" 'eww-buffer-show-previous
     ;; refresh
@@ -126,13 +125,13 @@
     "ZQ" 'quit-window
     "ZZ" 'quit-window)
 
-  (evil-collection-util-inhibit-insert-state eww-bookmark-mode-map)
+  (evil-collection-inhibit-insert-state 'eww-bookmark-mode-map)
   (evil-set-initial-state 'eww-bookmark-mode 'normal)
   (evil-collection-define-key 'normal 'eww-bookmark-mode-map
     "D" 'eww-bookmark-kill
     "P" 'eww-bookmark-yank
 
-    (kbd "<return>") 'eww-bookmark-browse
+    (kbd "RET") 'eww-bookmark-browse
     ;; refresh
     "gr" 'revert-buffer
     ;; quit

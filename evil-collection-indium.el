@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,10 +27,9 @@
 ;; Bindings for `indium'.
 
 ;;; Code:
-(require 'evil-collection-settings)
+(require 'evil-collection)
 (require 'indium nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-indium-maps '(indium-debugger-mode-map
                                         indium-inspector-mode-map
                                         indium-debugger-locals-mode-map
@@ -38,9 +37,10 @@
                                         indium-interaction-mode-map
                                         indium-repl-mode-map))
 
+;;;###autoload
 (defun evil-collection-indium-setup ()
   "Set up `evil' bindings for `indium'."
-  (when evil-collection-settings-setup-debugger-keys
+  (when evil-collection-setup-debugger-keys
     (evil-collection-define-key 'normal 'indium-debugger-mode-map
       "n" 'indium-debugger-step-over
       "i" 'indium-debugger-step-into
@@ -89,13 +89,13 @@
     "gr" 'indium-update-script-source
     "gz" 'indium-switch-to-repl-buffer)
 
-  (when evil-collection-settings-setup-debugger-keys
+  (when evil-collection-setup-debugger-keys
     (evil-collection-define-key 'normal 'indium-interaction-mode-map
-      [left-fringe mouse-1] 'evil-collection-indium-debugger-mouse-toggle-breakpoint
-      [left-margin mouse-1] 'evil-collection-indium-debugger-mouse-toggle-breakpoint
+      [left-fringe mouse-1] 'indium-mouse-toggle-breakpoint
+      [left-margin mouse-1] 'indium-mouse-toggle-breakpoint
       [f5] 'indium-debugger-resume
       [S-f5] 'indium-debugger-resume
-      [f9] 'evil-collection-indium-debugger-toggle-breakpoint
+      [f9] 'indium-toggle-breakpoint
       [f10] 'indium-debugger-step-over
       [f11] 'indium-debugger-step-into
       [S-f11] 'indium-debugger-step-out))
@@ -105,29 +105,6 @@
     (kbd "gk") 'indium-repl-previous-input
     (kbd "C-j") 'indium-repl-next-input
     (kbd "C-k") 'indium-repl-previous-input))
-
-;; FIXME: It would be better for these to go upstream.
-(declare-function indium-breakpoint-on-current-line-p "indium-breakpoint")
-(declare-function indium-remove-breakpoint "indium-interaction")
-(declare-function indium-add-breakpoint "indium-interaction")
-
-(defun evil-collection-indium-debugger-toggle-breakpoint ()
-  "Toggle breakpoint at point."
-  (interactive)
-  (if (indium-breakpoint-on-current-line-p)
-      (call-interactively #'indium-remove-breakpoint)
-    (call-interactively #'indium-add-breakpoint)))
-
-(defun evil-collection-indium-debugger-mouse-toggle-breakpoint (event)
-  "Toggle breakpoint at mouse EVENT click point."
-  (interactive "e")
-  (let* ((posn (event-end event))
-         (pos (posn-point posn)))
-    (when (numberp pos)
-      (with-current-buffer (window-buffer (posn-window posn))
-        (save-excursion
-          (goto-char pos)
-          (call-interactively #'evil-collection-indium-debugger-toggle-breakpoint))))))
 
 (provide 'evil-collection-indium)
 ;;; evil-collection-indium.el ends here

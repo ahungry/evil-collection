@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,19 +27,19 @@
 ;; Evil bindings for `woman'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'evil-collection-man) ; WoMan's keymap inherits from Man.
 (require 'woman)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-woman-maps '(woman-mode-map))
 
+;;;###autoload
 (defun evil-collection-woman-setup ()
   "Set up `evil' bindings for `woman'."
   (evil-set-initial-state 'woman-mode 'normal)
   (evil-collection-define-key 'normal 'woman-mode-map
-    (kbd "]") 'WoMan-next-manpage
-    (kbd "[") 'WoMan-previous-manpage
+    (kbd "]]") 'WoMan-next-manpage
+    (kbd "[[") 'WoMan-previous-manpage
 
     ;; goto
     ;; "gm" 'woman

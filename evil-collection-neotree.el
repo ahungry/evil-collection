@@ -1,10 +1,10 @@
-;;; evil-collection-neotree.el --- Evil bindings for neotree -*- lexical-binding: t -*-
+;;; evil-collection-neotree.el --- Evil bindings for neotree -*- lexical-binding: t; no-byte-compile: t; -*-
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
 ;; Author: Maximiliano Sandoval <msandova@protonmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,13 +28,13 @@
 
 ;;; Code:
 
-(require 'evil)
+(require 'evil-collection)
 (require 'neotree nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (declare-function neotree-make-executor "neotree.el")
 (defconst evil-collection-neotree-maps '(neotree-mode-map))
 
+;;;###autoload
 (defun evil-collection-neotree-setup ()
   "Set up `evil' bindings for `neotree'."
 
@@ -42,7 +42,7 @@
 
   (evil-collection-define-key 'normal 'neotree-mode-map
 
-    (kbd "<return>") (neotree-make-executor
+    (kbd "RET") (neotree-make-executor
                       :file-fn 'neo-open-file
                       :dir-fn 'neo-open-dir)
     (kbd "<tab>") (neotree-make-executor
@@ -64,10 +64,10 @@
     "gh" 'neotree-hidden-file-toggle
     (kbd "C-k") 'neotree-select-up-node
     "gk" 'neotree-select-up-node
-    "[" 'neotree-select-up-node
+    "[[" 'neotree-select-up-node
     (kbd "C-j") 'neotree-select-down-node
     "gj" 'neotree-select-down-node
-    "]" 'neotree-select-down-node
+    "]]" 'neotree-select-down-node
     "gv" 'neotree-open-file-in-system-application
     "c" 'neotree-create-node
     "y" 'neotree-copy-node

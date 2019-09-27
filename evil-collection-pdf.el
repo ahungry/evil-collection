@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,11 +27,9 @@
 ;; Evil bindings for pdf-tools.
 
 ;;; Code:
-(require 'evil-collection-util)
+(require 'evil-collection)
 (require 'pdf-tools nil t)
 (require 'pdf-view nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-pdf-maps '(pdf-view-mode-map
                                      pdf-outline-buffer-mode-map
@@ -89,13 +87,14 @@
     (pdf-view-first-page)
     (image-bob)))
 
+;;;###autoload
 (defun evil-collection-pdf-setup ()
   "Set up `evil' bindings for `pdf-view'."
-  (evil-collection-util-inhibit-insert-state pdf-view-mode-map)
+  (evil-collection-inhibit-insert-state 'pdf-view-mode-map)
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-collection-define-key 'normal 'pdf-view-mode-map
     ;; motion
-    (kbd "<return>") 'image-next-line
+    (kbd "RET") 'image-next-line
     "j" 'evil-collection-pdf-view-next-line-or-next-page
     "k" 'evil-collection-pdf-view-previous-line-or-previous-page
     (kbd "SPC") 'pdf-view-scroll-up-or-next-page
@@ -103,8 +102,8 @@
     (kbd "<delete>") 'pdf-view-scroll-down-or-previous-page
     (kbd "C-f") 'pdf-view-scroll-up-or-next-page
     (kbd "C-b") 'pdf-view-scroll-down-or-previous-page
-    "]" 'pdf-view-next-page-command
-    "[" 'pdf-view-previous-page-command
+    "]]" 'pdf-view-next-page-command
+    "[[" 'pdf-view-previous-page-command
     (kbd "C-j") 'pdf-view-next-page-command
     (kbd "C-k") 'pdf-view-previous-page-command
     "gj" 'pdf-view-next-page-command
@@ -122,9 +121,12 @@
 
     ;; zoom
     "+" 'pdf-view-enlarge
-    "-" 'pdf-view-shrink
-    "0" 'pdf-view-scale-reset
+    "zi" 'pdf-view-enlarge
     "=" 'pdf-view-enlarge
+    "-" 'pdf-view-shrink
+    "zo" 'pdf-view-shrink
+    "0" 'pdf-view-scale-reset
+    "z0" 'pdf-view-scale-reset
 
     ;; TODO: Why are those image-* bindings in pdf-tools?
     "a+" 'image-increase-speed
@@ -160,8 +162,6 @@
     ;; goto
     "gl" 'pdf-view-goto-label
 
-    "y" 'pdf-view-kill-ring-save
-
     ;; search
     (kbd "M-s o") 'pdf-occur ; TODO: More Evil bindings?
 
@@ -182,11 +182,14 @@
     "ZQ" 'kill-this-buffer
     "ZZ" 'quit-window)
 
-  (evil-collection-util-inhibit-insert-state pdf-outline-buffer-mode-map)
+  (evil-collection-define-key 'visual 'pdf-view-mode-map
+    "y" 'pdf-view-kill-ring-save)
+
+  (evil-collection-inhibit-insert-state 'pdf-outline-buffer-mode-map)
   (evil-set-initial-state 'pdf-outline-buffer-mode 'normal)
   (evil-collection-define-key 'normal 'pdf-outline-buffer-mode-map
     ;; open
-    (kbd "<return>") 'pdf-outline-follow-link-and-quit
+    (kbd "RET") 'pdf-outline-follow-link-and-quit
     (kbd "S-<return>") 'pdf-outline-follow-link
     (kbd "M-<return>") 'pdf-outline-display-link
     "go" 'pdf-outline-follow-link
@@ -205,11 +208,11 @@
     "ZQ" 'quit-window
     "ZZ" 'pdf-outline-quit-and-kill)
 
-  (evil-collection-util-inhibit-insert-state pdf-occur-buffer-mode-map)
+  (evil-collection-inhibit-insert-state 'pdf-occur-buffer-mode-map)
   (evil-set-initial-state 'pdf-occur-buffer-mode 'normal)
   (evil-collection-define-key 'normal 'pdf-occur-buffer-mode-map
     ;; open
-    (kbd "<return>") 'pdf-occur-goto-occurrence
+    (kbd "RET") 'pdf-occur-goto-occurrence
     (kbd "S-<return>") 'pdf-occur-view-occurrence
     (kbd "SPC") 'pdf-occur-view-occurrence
     "gd" 'pdf-occur-goto-occurrence
@@ -250,7 +253,7 @@
     (kbd "<backtab>") 'tablist-backward-column
     (kbd "C-c C-e") 'tablist-export-csv
 
-    [remap evil-first-non-blank] 'tablist-move-to-major-columnj
+    [remap evil-first-non-blank] 'tablist-move-to-major-column
     [remap evil-next-line] 'tablist-next-line
     [remap evil-previous-line] 'tablist-previous-line
 

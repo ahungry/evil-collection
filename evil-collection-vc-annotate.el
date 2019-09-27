@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;; Bindings for `vc-annotate'
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'vc-annotate)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-vc-annotate-maps '(vc-annotate-mode-map))
 
+;;;###autoload
 (defun evil-collection-vc-annotate-setup ()
   "Set up `evil' bindings for `vc-annotate'."
   (evil-set-initial-state 'vc-annotate-mode 'normal)
@@ -47,8 +47,8 @@
     "L" 'vc-annotate-show-log-revision-at-line
     "gj" 'vc-annotate-next-revision
     "gk" 'vc-annotate-prev-revision
-    "]" 'vc-annotate-next-revision
-    "[" 'vc-annotate-prev-revision
+    "]]" 'vc-annotate-next-revision
+    "[[" 'vc-annotate-prev-revision
     (kbd "C-j") 'vc-annotate-next-revision
     (kbd "C-k") 'vc-annotate-prev-revision
     "W" 'vc-annotate-working-revision

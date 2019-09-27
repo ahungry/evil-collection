@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,11 +27,12 @@
 ;; Evil bindings for bookmarks.
 
 ;;; Code:
+(require 'evil-collection)
 (require 'bookmark)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-bookmark-maps '(bookmark-bmenu-mode-map))
 
+;;;###autoload
 (defun evil-collection-bookmark-setup ()
   "Set up `evil' bindings for `bookmark'."
   (evil-set-initial-state 'bookmark-bmenu-mode 'normal)
@@ -69,7 +70,7 @@
     "O" 'bookmark-bmenu-other-window
     "go" 'bookmark-bmenu-other-window
     "gO" 'bookmark-bmenu-switch-other-window
-    (kbd "<return>") 'bookmark-bmenu-this-window
+    (kbd "RET") 'bookmark-bmenu-this-window
     (kbd "S-<return>") 'bookmark-bmenu-other-window
     (kbd "M-<return>") 'bookmark-bmenu-switch-other-window))
 

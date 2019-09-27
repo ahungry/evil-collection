@@ -4,7 +4,7 @@
 
 ;; Author: Maximiliano Sandoval <msandova@protonmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,14 +28,14 @@
 
 ;;; Code:
 
-(require 'evil)
+(require 'evil-collection)
 (require 'epa nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-epa-maps '(epa-key-list-mode-map
                                      epa-key-mode-map
                                      epa-info-mode-map))
 
+;;;###autoload
 (defun evil-collection-epa-setup ()
   (evil-collection-define-key 'normal 'epa-key-list-mode-map
     (kbd "<tab>") 'widget-forward

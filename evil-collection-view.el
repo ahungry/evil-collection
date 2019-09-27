@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2018 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,15 @@
 ;; Evil bindings for View.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'view)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-view-maps '(view-mode-map))
 
+;;;###autoload
 (defun evil-collection-view-setup ()
   "Set up `evil' bindings for `view'."
+  (add-hook 'view-mode-hook 'evil-normalize-keymaps)
   (evil-set-initial-state 'view-mode 'normal)
   (evil-collection-define-key 'normal 'view-mode-map
     "q" 'quit-window

@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,9 +28,7 @@
 
 ;;; Code:
 (require 'elisp-mode)
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defconst evil-collection-elisp-mode-maps nil)
 
@@ -69,6 +67,7 @@ alternative printed representations that can be displayed."
         (apply command args))
     (apply command args)))
 
+;;;###autoload
 (defun evil-collection-elisp-mode-setup ()
   "Set up `evil' bindings for `elisp-mode'."
   (unless evil-move-beyond-eol

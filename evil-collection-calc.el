@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2018 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
-;; Maintainer: James Nguyen <james@jojojames.com>, Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
+;; Maintainer: James Nguyen <james@jojojames.com>, Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -26,15 +26,15 @@
 ;; Evil bindings for calc.
 
 ;;; Code:
-(require 'evil-collection-util)
+(require 'evil-collection)
 (require 'calc)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-calc-maps '(calc-mode-map))
 
+;;;###autoload
 (defun evil-collection-calc-setup ()
   "Set up `evil' bindings for `calc'."
-  (evil-collection-util-inhibit-insert-state calc-mode-map)
+  (evil-collection-inhibit-insert-state 'calc-mode-map)
   (evil-set-initial-state 'calc-mode 'normal)
 
   ;; Calc sets up its bindings just-in-time for its "extensions".  I don't think
@@ -56,7 +56,7 @@
 
     (kbd "<tab>") 'calc-roll-down
     (kbd "S-<return>") 'calc-over
-    (kbd "<return>") 'calc-enter
+    (kbd "RET") 'calc-enter
     (kbd "SPC") 'calc-enter
 
     (kbd "C-x C-t") 'calc-transpose-lines
@@ -126,8 +126,8 @@
     "R" 'calc-round
     "S" 'calc-sin
     "T" 'calc-tan
-    "[" 'calc-begin-vector
-    "]" 'calc-end-vector
+    "[[" 'calc-begin-vector
+    "]]" 'calc-end-vector
     "\\" 'calc-idiv
     "^" 'calc-power
     "_" 'calcDigit-start

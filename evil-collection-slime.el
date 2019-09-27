@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,7 +27,7 @@
 ;; Evil bindings for `slime-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'slime nil t)
 
 (defvar slime-parent-map)
@@ -37,14 +37,13 @@
 (defvar slime-popup-buffer-mode-map)
 (defvar slime-xref-mode-map)
 
-(declare-function evil-collection-define-key "evil-collection")
-
 (defconst evil-collection-slime-maps '(slime-parent-map
                                        sldb-mode-map
                                        slime-inspector-mode-map
                                        slime-mode-map
                                        slime-popup-buffer-mode-map
-                                       slime-xref-mode-map ))
+                                       slime-thread-control-mode-map
+                                       slime-xref-mode-map))
 
 (defun evil-collection-slime-last-sexp (command &rest args)
   "In normal-state or motion-state, last sexp ends at point."
@@ -55,6 +54,7 @@
         (apply command args))
     (apply command args)))
 
+;;;###autoload
 (defun evil-collection-slime-setup ()
   "Set up `evil' bindings for `slime'."
   (unless evil-move-beyond-eol
@@ -67,6 +67,7 @@
   (evil-set-initial-state 'sldb-mode 'normal)
   (evil-set-initial-state 'slime-inspector-mode 'normal)
   (evil-set-initial-state 'slime-popup-buffer-mode 'normal)
+  (evil-set-initial-state 'slime-thread-control-mode 'normal)
   (evil-set-initial-state 'slime-xref-mode 'normal)
 
   (evil-collection-define-key 'normal 'slime-parent-map
@@ -75,8 +76,6 @@
 
   (evil-collection-define-key 'normal 'sldb-mode-map
     (kbd "RET") 'sldb-default-action
-    (kbd "C-m") 'sldb-default-action
-    [return] 'sldb-default-action
     [mouse-2]  'sldb-default-action/mouse
     [follow-link] 'mouse-face
     "\C-i" 'sldb-cycle
@@ -90,8 +89,8 @@
     "gk" 'sldb-up
     (kbd "C-j") 'sldb-down
     (kbd "C-k") 'sldb-up
-    "]" 'sldb-details-down
-    "[" 'sldb-details-up
+    "]]" 'sldb-details-down
+    "[[" 'sldb-details-up
     (kbd "M-j") 'sldb-details-down
     (kbd "M-k") 'sldb-details-up
     "gg" 'sldb-beginning-of-backtrace
@@ -124,27 +123,31 @@
     "9" 'sldb-invoke-restart-9)
 
   (evil-collection-define-key 'normal 'slime-inspector-mode-map
-    [return] 'slime-inspector-operate-on-point
-    (kbd "C-m") 'slime-inspector-operate-on-point
+    (kbd "RET") 'slime-inspector-operate-on-point
     [mouse-1] 'slime-inspector-operate-on-click
     [mouse-2] 'slime-inspector-operate-on-click
     [mouse-6] 'slime-inspector-pop
     [mouse-7] 'slime-inspector-next
+    ;; TODO: `slime-inspector-next' and `slime-inspector-pop' should probably
+    ;; just be bound to C-i and C-o.
     "gk" 'slime-inspector-pop
     (kbd "C-k") 'slime-inspector-pop
+    "[[" 'slime-inspector-pop
+    (kbd "C-o") 'slime-inspector-pop
     "gj" 'slime-inspector-next
-    "j" 'slime-inspector-next
-    "k" 'slime-inspector-previous-inspectable-object
+    (kbd "C-j") 'slime-inspector-next
+    "]]" 'slime-inspector-next
+    (kbd "C-i") 'slime-inspector-next
     "K" 'slime-inspector-describe
     "p" 'slime-inspector-pprint
     "e" 'slime-inspector-eval
     "h" 'slime-inspector-history
     "gr" 'slime-inspector-reinspect
     "gv" 'slime-inspector-toggle-verbose
-    "\C-i" 'slime-inspector-next-inspectable-object
-    [(shift tab)]
-    'slime-inspector-previous-inspectable-object ; Emacs translates S-TAB
-    [backtab] 'slime-inspector-previous-inspectable-object ; to BACKTAB on X.
+    (kbd "<tab>") 'slime-inspector-next-inspectable-object
+    (kbd "C-i") 'slime-inspector-next-inspectable-object
+    (kbd "<S-tab>") 'slime-inspector-previous-inspectable-object ; Emacs translates S-TAB
+    (kbd "<backtab>") 'slime-inspector-previous-inspectable-object ; to BACKTAB on X.
     "." 'slime-inspector-show-source
     "gR" 'slime-inspector-fetch-all
     "q" 'slime-inspector-quit)
@@ -153,7 +156,8 @@
     (kbd "K") 'slime-describe-symbol
     (kbd "C-t") 'slime-pop-find-definition-stack
     ;; goto
-    "gd" 'slime-edit-definition)
+    "gd" 'slime-edit-definition
+    "gz" 'slime-switch-to-output-buffer)
 
   (evil-collection-define-key 'normal 'slime-popup-buffer-mode-map
     ;; quit
@@ -164,6 +168,13 @@
     ;; goto
     "gd" 'slime-edit-definition)
 
+  (evil-collection-inhibit-insert-state 'slime-thread-control-mode-map)
+  (evil-collection-define-key 'normal 'slime-thread-control-mode-map
+    "a" 'slime-thread-attach
+    "d" 'slime-thread-debug
+    "x" 'slime-thread-kill
+    "gr" 'slime-update-threads-buffer)
+
   (evil-collection-define-key 'normal 'slime-xref-mode-map
     (kbd "RET") 'slime-goto-xref
     (kbd "S-<return>") 'slime-goto-xref
@@ -172,11 +183,21 @@
     "gk" 'slime-xref-prev-line
     (kbd "C-j") 'slime-xref-next-line
     (kbd "C-k") 'slime-xref-prev-line
-    "]" 'slime-xref-next-line
-    "[" 'slime-xref-prev-line
+    "]]" 'slime-xref-next-line
+    "[[" 'slime-xref-prev-line
     "gr" 'slime-recompile-xref
     "gR" 'slime-recompile-all-xrefs
     "r" 'slime-xref-retract)
+
+  (evil-collection-define-key 'normal 'slime-repl-mode-map
+    "gj" 'slime-repl-next-prompt
+    "gk" 'slime-repl-previous-prompt
+    (kbd "C-j") 'slime-repl-next-prompt
+    (kbd "C-k") 'slime-repl-previous-prompt
+    "]]" 'slime-repl-next-prompt
+    "[[" 'slime-repl-previous-prompt
+    (kbd "C-p") 'slime-repl-previous-input
+    (kbd "C-n") 'slime-repl-next-input)
 
   (add-hook 'slime-popup-buffer-mode-hook #'evil-normalize-keymaps))
 

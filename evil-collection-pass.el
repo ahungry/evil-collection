@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,14 @@
 ;; Evil bindings for `pass-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'pass nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defvar pass-mode-map)
 
 (defconst evil-collection-pass-maps '(pass-mode-map))
 
+;;;###autoload
 (defun evil-collection-pass-setup ()
   "Set up `evil' bindings for `pass-mode'."
   (evil-collection-define-key 'normal 'pass-mode-map
@@ -42,8 +42,9 @@
     "gk" 'pass-prev-entry
     (kbd "C-j") 'pass-next-entry
     (kbd "C-k") 'pass-prev-entry
-    (kbd "]") 'pass-next-directory
-    (kbd "[") 'pass-prev-directory
+    (kbd "]]") 'pass-next-directory
+    (kbd "[[") 'pass-prev-directory
+    "d" 'pass-kill
     "x" 'pass-kill
     "s" 'isearch-forward
     "g?" 'describe-mode
@@ -53,7 +54,7 @@
     "Y" 'pass-copy
     "r" 'pass-rename
     "o" 'pass-otp-options
-    (kbd "<return>") 'pass-view
+    (kbd "RET") 'pass-view
     "q" 'pass-quit))
 
 (provide 'evil-collection-pass)

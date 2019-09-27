@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,19 +27,18 @@
 ;; Bindings for `realgud'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'realgud nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-realgud-maps '(realgud:shortkey-mode-map))
 
+;;;###autoload
 (defun evil-collection-realgud-setup ()
   "Set up `evil' bindings for `realgud'."
   ;; This one is to represent `realgud-populate-src-buffer-map-plain'.
   (evil-collection-define-key 'normal 'realgud:shortkey-mode-map
     "b" 'realgud:cmd-break
-    "u" 'realgud:cmd-delete
+    "D" 'realgud:cmd-delete
     "X" 'realgud:cmd-clear
     "-" 'realgud:cmd-disable
     "+" 'realgud:cmd-enable
@@ -88,6 +87,8 @@
     [left-margin mouse-1] 'realgud-cmds--mouse-add-remove-bp
     ">" 'realgud:cmd-newer-frame
     "<" 'realgud:cmd-older-frame
+    "d" 'realgud:cmd-newer-frame
+    "u" 'realgud:cmd-older-frame
     "gR" 'realgud-recenter-arrow ;; FIXME: Hmnn!
     "C" 'realgud-window-cmd-undisturb-src
     "g?" 'realgud:cmdbuf-info-describe

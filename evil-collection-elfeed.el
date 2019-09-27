@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,9 +28,7 @@
 
 ;;; Code:
 (require 'elfeed nil t)
-(require 'evil-collection-util)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (defvar elfeed-search-mode-map)
 (defvar elfeed-show-mode-map)
@@ -38,14 +36,15 @@
 (defconst evil-collection-elfeed-maps '(elfeed-search-mode-map
                                         elfeed-show-mode-map))
 
+;;;###autoload
 (defun evil-collection-elfeed-setup ()
   "Set up `evil' bindings for `elfeed'."
 
-  (evil-collection-util-inhibit-insert-state elfeed-search-mode-map)
+  (evil-collection-inhibit-insert-state 'elfeed-search-mode-map)
   (evil-set-initial-state 'elfeed-search-mode 'normal)
   (evil-collection-define-key 'normal 'elfeed-search-mode-map
     ;; open
-    (kbd "<return>") 'elfeed-search-show-entry
+    (kbd "RET") 'elfeed-search-show-entry
     (kbd "S-<return>") 'elfeed-search-browse-url
     "go" 'elfeed-search-browse-url
 
@@ -73,7 +72,7 @@
     "U" 'elfeed-search-tag-all-unread
     "u" 'elfeed-search-untag-all-unread)
 
-  (evil-collection-util-inhibit-insert-state elfeed-show-mode-map)
+  (evil-collection-inhibit-insert-state 'elfeed-show-mode-map)
   (evil-set-initial-state 'elfeed-show-mode 'normal)
   (evil-collection-define-key 'normal 'elfeed-show-mode-map
     (kbd "S-<return>") 'elfeed-show-visit
@@ -92,8 +91,8 @@
     "P" 'elfeed-show-play-enclosure
     "d" 'elfeed-show-save-enclosure
 
-    "]" 'elfeed-show-next
-    "[" 'elfeed-show-prev
+    "]]" 'elfeed-show-next
+    "[[" 'elfeed-show-prev
     "gj" 'elfeed-show-next
     "gk" 'elfeed-show-prev
     (kbd "C-j") 'elfeed-show-next

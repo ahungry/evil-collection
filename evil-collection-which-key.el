@@ -4,7 +4,7 @@
 
 ;; Author: Maximiliano Sandoval <msandova@protonmail.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,16 +28,16 @@
 
 ;;; Code:
 
-(require 'evil)
+(require 'evil-collection)
 (require 'which-key nil t)
 
 (defvar which-key-C-h-map)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-which-key-maps '(which-key-C-h-map))
 
 ;; `which-key'is coded so that the prompt properly shows j and k as
 ;; the bindings.
+;;;###autoload
 (defun evil-collection-which-key-setup ()
   "Set up `evil' bindings for `which-key'."
 

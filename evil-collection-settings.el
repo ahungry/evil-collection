@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -25,9 +25,14 @@
 
 ;;; Commentary:
 ;;; Settings for `evil-collection'.
-(require 'evil)
+(require 'evil-collection)
 
 ;;; Code:
+
+(make-obsolete-variable
+ 'evil-collection-settings-setup-debugger-keys
+ 'evil-collection-setup-debugger-keys "2019/05/02")
+
 (defcustom evil-collection-settings-setup-debugger-keys t
   "Whether to bind debugger keys when debugger is active.
 

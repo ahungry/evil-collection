@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'debbugs nil t)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-debbugs-maps '(debbugs-gnu-mode-map))
 
+;;;###autoload
 (defun evil-collection-debbugs-setup ()
   "Set up `evil' bindings for `debbugs-gnu-mode'."
   (evil-set-initial-state 'debbugs-gnu-mode 'normal)
@@ -43,14 +43,15 @@
     (kbd "<backtab>") 'backward-button
     (kbd "SPC") 'scroll-up-command
 
-    (kbd "<return>") 'debbugs-gnu-select-report
+    (kbd "RET") 'debbugs-gnu-select-report
     "c" 'debbugs-gnu-send-control-message
     "d" 'debbugs-gnu-display-status
 
     ;; filter
-    (kbd "s") 'debbugs-gnu-narrow-to-status
+    "s" 'debbugs-gnu-narrow-to-status
+    "S" 'debbugs-gnu-search
     ;; "S" 'debbugs-gnu-widen ; Useless if we can just press "s RET" (empty filter).
-    "S" 'debbugs-gnu-toggle-suppress
+    "x" 'debbugs-gnu-toggle-suppress
     "r" 'debbugs-gnu-show-all-blocking-reports
 
     ;; sort
@@ -66,6 +67,10 @@
 
     ;; refresh
     "gr" 'debbugs-gnu-rescan
+
+    "g?" 'debbugs-gnu-manual
+    "gt" 'debbugs-gnu-view-bug-triage
+    "g#" 'debbugs-gnu-bugs
 
     ;; quit
     "q" 'quit-window

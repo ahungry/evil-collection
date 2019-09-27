@@ -1,4 +1,4 @@
-;;; evil-collection-etags-select.el --- Bindings for `etags-select'. -*- lexical-binding: t -*-
+;;; evil-collection-vc-git.el --- Evil bindings for Vc-Git -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2017 James Nguyen
 
@@ -8,7 +8,7 @@
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
-;; Keywords: evil, emacs, tools
+;; Keywords: evil, vc-git, tools
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,18 +24,18 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;; Bindings for `etags-select'.
-(require 'evil)
-(require 'etags-select nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
+;; Evil bindings for Vc-Git.
 
 ;;; Code:
-(defun evil-collection-etags-select-setup ()
-  "Set up `evil' bindings for `etags-select'.."
-  ;; FIXME: probably etags-select should be recomended in docs
-  (evil-collection-define-key nil 'evil-motion-state-map
-    "g]" 'etags-select-find-tag-at-point))
+(require 'vc-git)
+(require 'evil-collection)
 
-(provide 'evil-collection-etags-select)
-;;; evil-collection-etags-select.el ends here
+(defconst evil-collection-vc-git-maps '(vc-git-mode-map))
+
+;;;###autoload
+(defun evil-collection-vc-git-setup ()
+  "Set up `evil' bindings for `vc-git'."
+  (evil-set-initial-state 'vc-git-log-view-mode 'normal))
+
+(provide 'evil-collection-vc-git)
+;;; evil-collection-vc-git.el ends here

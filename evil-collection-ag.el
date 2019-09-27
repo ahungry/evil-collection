@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,12 +28,11 @@
 
 ;;; Code:
 (require 'ag nil t)
-(require 'evil)
-(require 'evil-collection-evil-search)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-ag-maps '(ag-mode-map))
 
+;;;###autoload
 (defun evil-collection-ag-setup ()
   "Set up `evil' bindings for `ag'."
   (evil-collection-define-key '(normal visual) 'ag-mode-map
@@ -48,8 +47,8 @@
     "gk" 'compilation-previous-error
     (kbd "C-j") 'compilation-next-error
     (kbd "C-k") 'compilation-previous-error
-    "]" 'compilation-next-error
-    "[" 'compilation-previous-error
+    "]]" 'compilation-next-error
+    "[[" 'compilation-previous-error
 
     ;; search
     "?" evil-collection-evil-search-backward

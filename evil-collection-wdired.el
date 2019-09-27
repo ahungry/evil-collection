@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,14 +27,16 @@
 ;; Bindings for `wdired'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'wdired)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-wdired-maps '(wdired-mode-map))
 
+;;;###autoload
 (defun evil-collection-wdired-setup ()
   "Set up `evil' bindings for `wdired'."
+  (evil-set-initial-state 'wdired-mode 'normal)
+
   (evil-collection-define-key nil 'wdired-mode-map
     [remap evil-write] 'wdired-finish-edit)
 

@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 James Nguyen
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,13 +27,12 @@
 ;; Evil bindings for `profiler'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'profiler)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-profiler-maps '(profiler-report-mode-map))
 
+;;;###autoload
 (defun evil-collection-profiler-setup ()
   "Set up `evil' bindings for `profiler'."
   (evil-set-initial-state 'profiler-report-mode 'normal)
@@ -58,7 +57,7 @@
     "=" 'profiler-report-compare-profile
 
     ;; open
-    (kbd "<return>") 'profiler-report-find-entry
+    (kbd "RET") 'profiler-report-find-entry
 
     ;; refresh
     "gr" 'revert-buffer

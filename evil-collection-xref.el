@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,12 +27,12 @@
 ;; Evil bindings for `xref'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'xref)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-xref-maps '(xref--xref-buffer-mode-map))
 
+;;;###autoload
 (defun evil-collection-xref-setup ()
   "Set up `evil' bindings for `xref'."
   (evil-collection-define-key 'normal 'xref--xref-buffer-mode-map
@@ -41,12 +41,15 @@
     "gk" 'xref-prev-line
     (kbd "C-j") 'xref-next-line
     (kbd "C-k") 'xref-prev-line
-    "]" 'xref-next-line
-    "[" 'xref-prev-line
+    "]]" 'xref-next-line
+    "[[" 'xref-prev-line
     "r" 'xref-query-replace-in-results
 
+    ;; Match `dired''s `dired-do-find-regexp-and-replace'.
+    "Q" 'xref-query-replace-in-results
+
     ;; open
-    (kbd "<return>") 'xref-goto-xref
+    (kbd "RET") 'xref-goto-xref
     (kbd "S-<return>") 'xref-show-location-at-point
     "o" 'xref-show-location-at-point
     "go" 'xref-show-location-at-point))

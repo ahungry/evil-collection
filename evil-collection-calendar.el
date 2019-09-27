@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,11 +28,11 @@
 
 ;;; Code:
 (require 'calendar)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-calendar-maps '(calendar-mode-map))
 
+;;;###autoload
 (defun evil-collection-calendar-setup ()
   "Set up `evil' bindings for `calendar'."
   (evil-set-initial-state 'calendar-mode 'normal)
@@ -45,8 +45,8 @@
     "0" 'calendar-beginning-of-week
     "^" 'calendar-beginning-of-week
     "$" 'calendar-end-of-week
-    "[" 'calendar-backward-year
-    "]" 'calendar-forward-year
+    "[[" 'calendar-backward-year
+    "]]" 'calendar-forward-year
     (kbd "M-<") 'calendar-beginning-of-year
     (kbd "M->") 'calendar-end-of-year
     "(" 'calendar-beginning-of-month

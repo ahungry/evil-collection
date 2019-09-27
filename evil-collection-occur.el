@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,9 +27,7 @@
 ;; Evil bindings for `occur'.
 
 ;;; Code:
-(require 'evil)
-
-(declare-function evil-collection-define-key "evil-collection")
+(require 'evil-collection)
 
 (when (> emacs-major-version 25)
   (require 'replace))
@@ -37,6 +35,7 @@
 (defconst evil-collection-occur-maps '(occur-mode-map
                                        occur-edit-mode-map))
 
+;;;###autoload
 (defun evil-collection-occur-setup ()
   "Set up `evil' bindings for `occur'."
   (evil-set-initial-state 'occur-mode 'normal)
@@ -49,7 +48,7 @@
     (kbd "C-c C-c") 'occur-mode-goto-occurrence
 
     ;; open
-    (kbd "<return>") 'occur-mode-goto-occurrence
+    (kbd "RET") 'occur-mode-goto-occurrence
     (kbd "S-<return>") 'occur-mode-goto-occurrence-other-window
     (kbd "M-<return>") 'occur-mode-display-occurrence
     "go" 'occur-mode-goto-occurrence-other-window

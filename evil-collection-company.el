@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -28,9 +28,8 @@
 
 ;;; Code:
 (require 'company nil t)
-(require 'evil)
+(require 'evil-collection)
 
-(declare-function evil-collection-define-key "evil-collection")
 (declare-function company-tng-configure-default "company-tng")
 
 (defgroup evil-collection-company nil
@@ -53,6 +52,7 @@ be set through custom or before evil-collection loads."
 
 (defconst evil-collection-company-maps '(company-active-map company-search-map))
 
+;;;###autoload
 (defun evil-collection-company-setup ()
   "Set up `evil' bindings for `company'."
   (evil-collection-define-key nil 'company-active-map

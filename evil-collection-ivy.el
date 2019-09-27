@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,21 +27,21 @@
 ;; Evil bindings for `ivy-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'ivy nil t)
 
-(declare-function evil-collection-define-key "evil-collection")
 (defconst evil-collection-ivy-maps '(ivy-occur-mode-map
                                      ivy-occur-grep-mode-map
                                      ivy-minibuffer-map))
 
+;;;###autoload
 (defun evil-collection-ivy-setup ()
   "Set up `evil' bindings for `ivy-mode'."
   (evil-collection-define-key nil 'ivy-mode-map
     (kbd "<escape>") 'minibuffer-keyboard-quit)
   (evil-collection-define-key 'normal 'ivy-occur-mode-map
     [mouse-1] 'ivy-occur-click
-    (kbd "<return>") 'ivy-occur-press-and-switch
+    (kbd "RET") 'ivy-occur-press-and-switch
     "j" 'ivy-occur-next-line
     "k" 'ivy-occur-previous-line
     "h" 'evil-backward-char
@@ -74,7 +74,7 @@
     "i" 'ivy-wgrep-change-to-wgrep-mode
     "gd" 'ivy-occur-delete-candidate
     [mouse-1] 'ivy-occur-click
-    (kbd "<return>") 'ivy-occur-press-and-switch
+    (kbd "RET") 'ivy-occur-press-and-switch
     "j" 'ivy-occur-next-line
     "k" 'ivy-occur-previous-line
     "h" 'evil-backward-char
@@ -87,6 +87,8 @@
     "go" 'ivy-occur-dispatch
     "gc" 'ivy-occur-toggle-calling
 
+    "0" 'evil-digit-argument-or-evil-beginning-of-line
+
     ;; quit
     "q" 'quit-window)
 
@@ -94,7 +96,7 @@
   (when evil-collection-setup-minibuffer
     (evil-collection-define-key 'normal 'ivy-minibuffer-map
       (kbd "<escape>") 'abort-recursive-edit
-      (kbd "<return>") 'exit-minibuffer
+      (kbd "RET") 'exit-minibuffer
       (kbd "C-m") 'ivy-done
       "j" 'ivy-next-line
       "k" 'ivy-previous-line)

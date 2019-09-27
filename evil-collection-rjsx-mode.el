@@ -4,7 +4,7 @@
 
 ;; Author: James Nguyen <james@jojojames.com>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,15 +27,14 @@
 ;;; Bindings for `rjsx-mode'.
 
 ;;; Code:
-(require 'evil)
+(require 'evil-collection)
 (require 'rjsx-mode nil t)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defvar rjsx-mode-map)
 
 (defconst evil-collection-rjsx-maps '(rjsx-mode-map))
 
+;;;###autoload
 (defun evil-collection-rjsx-mode-setup ()
   "Set up `evil' bindings for `rjsx-mode'."
   (when evil-want-C-d-scroll

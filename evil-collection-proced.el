@@ -2,9 +2,9 @@
 
 ;; Copyright (C) 2017 Pierre Neidhardt
 
-;; Author: Pierre Neidhardt <ambrevar@gmail.com>
+;; Author: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; Maintainer: James Nguyen <james@jojojames.com>
-;; Pierre Neidhardt <ambrevar@gmail.com>
+;; Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-evil/evil-collection
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "25.1"))
@@ -27,19 +27,18 @@
 ;; Evil bindings for proced.
 
 ;;; Code:
-(require 'evil-collection-util)
+(require 'evil-collection)
 (require 'proced)
-
-(declare-function evil-collection-define-key "evil-collection")
 
 (defconst evil-collection-proced-maps '(proced-mode-map))
 
+;;;###autoload
 (defun evil-collection-proced-setup ()
   "Set up `evil' bindings for `proced'."
-  (evil-collection-util-inhibit-insert-state proced-mode-map)
+  (evil-collection-inhibit-insert-state 'proced-mode-map)
   (evil-set-initial-state 'proced-mode 'normal)
   (evil-collection-define-key 'normal 'proced-mode-map
-    (kbd "<return>") 'proced-refine
+    (kbd "RET") 'proced-refine
 
     ;; mark
     ;; TODO: Implement a proced-toggle-mark?
